@@ -36,7 +36,7 @@ export default function Banner (props: {
         bg={`url(${banner})`}
         bgSize='cover'
         borderRadius='16px'
-        h='131px'
+        h='51px'
         w='100%'
       />
       <NextAvatar
@@ -51,10 +51,10 @@ export default function Banner (props: {
       <Text color={textColorPrimary} fontWeight='bold' fontSize='xl' mt='10px'>
         {name}
       </Text>
-      <Text color={textColorSecondary} fontSize='sm'>
+      {/* <Text color={textColorSecondary} fontSize='sm'>
         {job}
-      </Text>
-      <Flex w='max-content' mx='auto' mt='26px'>
+      </Text> */}
+      {/* <Flex w='max-content' mx='auto' mt='26px'>
         <Flex mx='auto' me='60px' alignItems='center' flexDirection='column'>
           <Text color={textColorPrimary} fontSize='2xl' fontWeight='700'>
             {posts}
@@ -79,7 +79,7 @@ export default function Banner (props: {
             Following
           </Text>
         </Flex>
-      </Flex>
+      </Flex> */}
     </Card>
   )
 }
