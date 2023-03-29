@@ -58,7 +58,6 @@ import tableDataComplex from 'views/user/default/variables/tableDataComplex.json
 import { isWindowAvailable } from 'utils/navigation'
 import UserLayout from 'layouts/user'
 import { Image } from 'components/image/Image'
-import Usa from 'img/dashboards/usa.png'
 
 export default function UserReports () {
   // Chakra Color Mode
@@ -75,7 +74,7 @@ export default function UserReports () {
             gap='20px'
             mb='20px'
           >
-            <MiniStatistics
+            {/* <MiniStatistics
               startContent={
                 <IconBox
                   w='56px'
@@ -93,8 +92,8 @@ export default function UserReports () {
               }
               name='Earnings'
               value='$350.4'
-            />
-            <MiniStatistics
+            /> */}
+            {/* <MiniStatistics
               startContent={
                 <IconBox
                   w='56px'
@@ -112,9 +111,11 @@ export default function UserReports () {
               }
               name='Spend this month'
               value='$642.39'
-            />
+            /> */}
             <MiniStatistics growth='+23%' name='Sales' value='$574.34' />
-            <MiniStatistics
+            <MiniStatistics growth='+23%' name='Sales' value='$574.34' />
+            <MiniStatistics growth='+23%' name='Sales' value='$574.34' />
+            {/* <MiniStatistics
               endContent={
                 <Flex me='-16px' mt='10px'>
                   <FormLabel htmlFor='balance'>
@@ -137,8 +138,8 @@ export default function UserReports () {
               }
               name='Your balance'
               value='$1,000'
-            />
-            <MiniStatistics
+            /> */}
+            {/* <MiniStatistics
               startContent={
                 <IconBox
                   w='56px'
@@ -149,8 +150,8 @@ export default function UserReports () {
               }
               name='New Tasks'
               value='154'
-            />
-            <MiniStatistics
+            /> */}
+            {/* <MiniStatistics
               startContent={
                 <IconBox
                   w='56px'
@@ -168,14 +169,17 @@ export default function UserReports () {
               }
               name='Total Projects'
               value='2935'
-            />
+            /> */}
           </SimpleGrid>
 
           <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px' mb='20px'>
             <TotalSpent />
-            <WeeklyRevenue />
+            <TotalSpent />
+            <TotalSpent />
+            <TotalSpent />
+            {/* <WeeklyRevenue /> */}
           </SimpleGrid>
-          <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
+          {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
             <CheckTable
               columnsData={columnsDataCheck}
               tableData={(tableDataCheck as unknown) as TableData[]}
@@ -184,8 +188,8 @@ export default function UserReports () {
               <DailyTraffic />
               <PieCard />
             </SimpleGrid>
-          </SimpleGrid>
-          <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
+          </SimpleGrid> */}
+          {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
             <ComplexTable
               columnsData={columnsDataComplex}
               tableData={(tableDataComplex as unknown) as TableData[]}
@@ -194,7 +198,7 @@ export default function UserReports () {
               <Tasks />
               <MiniCalendar h='100%' minW='100%' selectRange={false} />
             </SimpleGrid>
-          </SimpleGrid>
+          </SimpleGrid> */}
         </>
       </Box>
     </UserLayout>

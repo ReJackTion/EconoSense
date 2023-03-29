@@ -35,7 +35,7 @@ export default function Footer() {
 				</Text>
 			</Text>
 			<List display='flex'>
-				<ListItem
+				{/* <ListItem
 					me={{
 						base: '20px',
 						md: '44px'
@@ -52,7 +52,7 @@ export default function Footer() {
 					<Link fontWeight='500' color={textColor} href='https://www.simmmple.com/licenses'>
 						License
 					</Link>
-				</ListItem>
+				</ListItem> */}
 				<ListItem
 					me={{
 						base: '20px',
@@ -62,11 +62,11 @@ export default function Footer() {
 						Terms of Use
 					</Link>
 				</ListItem>
-				<ListItem>
+				{/* <ListItem>
 					<Link fontWeight='500' color={textColor} href='https://www.blog.simmmple.com/'>
 						Blog
 					</Link>
-				</ListItem>
+				</ListItem> */}
 			</List>
 		</Flex>
 	);
