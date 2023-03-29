@@ -116,7 +116,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 				</MenuList>
 			</Menu>
 
-			<Menu>
+			{/* <Menu>
 				<MenuButton p='0px'>
 					<Icon mt='6px' as={MdInfoOutline} color={navbarIcon} w='18px' h='18px' me='10px' />
 				</MenuButton>
@@ -155,7 +155,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
 						</Link>
 					</Flex>
 				</MenuList>
-			</Menu>
+			</Menu> */}
 
 			<Button
 				variant='no-hover'

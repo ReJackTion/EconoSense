@@ -10,7 +10,6 @@ import {
 import MainDashboard from 'pages/user/default'
 import Profile from 'pages/user/profile'
 import DataTables from 'pages/user/data-tables'
-import RTL from 'pages/rtl/rtl-default'
 
 // Auth Imports
 import SignInCentered from 'pages/auth/sign-in'
@@ -44,13 +43,6 @@ const routes: IRoute[] = [
     path: '/sign-in',
     icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
     component: SignInCentered
-  },
-  {
-    name: 'RTL Admin',
-    layout: '/rtl',
-    path: '/rtl-default',
-    icon: <Icon as={MdHome} width='20px' height='20px' color='inherit' />,
-    component: RTL
   }
 ]
 
