@@ -1,0 +1,7 @@
+# Generic single-database configuration.
+
+## Initial Alembic Migration version setup
+
+Reference: https://alembic.sqlalchemy.org/en/latest/autogenerate.html
+
+1. Run the initial Alembic revision migration version via poetry with the Alembic command: `poetry run alembic revision --autogenerate -m "Init migration"`
