@@ -2,6 +2,7 @@
 import { Flex, useColorModeValue } from '@chakra-ui/react';
 
 // Custom components
+import { HorizonLogo } from 'components/icons/Icons';
 import EconoSenseLogo from 'components/icons/EconoSenseIcon';
 import { HSeparator } from 'components/separator/Separator';
 
@@ -11,6 +12,7 @@ export function SidebarBrand() {
 
 	return (
 		<Flex alignItems='center' flexDirection='column'>
+			{/* <HorizonLogo h='26px' w='175px' my='32px' color={logoColor} /> */}
 			<EconoSenseLogo height='26px' width='175px' my='32px' color={logoColor} />
 			<HSeparator mb='20px' />
 		</Flex>
