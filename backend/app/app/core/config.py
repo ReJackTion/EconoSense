@@ -25,7 +25,8 @@ class EmailSettings(BaseSettings):
 
 
 class DBSettings(BaseSettings):
-    SQLALCHEMY_DATABASE_URI: str = "sqlite:///example.db"
+    # SQLALCHEMY_DATABASE_URI: str = "sqlite:///example.db"
+    SQLALCHEMY_DATABASE_URI: str = "postgresql://postgres:password@localhost/postgres"
     FIRST_SUPERUSER: EmailStr = "admin@recipeapi.com"
     FIRST_SUPERUSER_PW: str = "CHANGEME"
 

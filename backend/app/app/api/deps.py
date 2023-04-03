@@ -11,6 +11,7 @@ from app.clients.email import MailGunConfig, EmailClient
 from app.db.session import SessionLocal
 from app.models.user import User
 from app.clients.reddit import RedditClient
+from app.clients.dbnomics import DBnomicsClient
 from app import crud
 
 
@@ -29,6 +30,10 @@ def get_db() -> Generator:
 
 def get_reddit_client() -> RedditClient:
     return RedditClient()
+
+
+def get_dbnomics_client() -> DBnomicsClient:
+    return DBnomicsClient()
 
 
 def get_email_client() -> EmailClient:

@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from app import crud, schemas
 from app.db import base  # noqa: F401
 from app.core.config import settings
+from app.core.preprocessing import get_DBnomics_data
 
 logger = logging.getLogger(__name__)
 
@@ -40,6 +41,35 @@ def init_db(db: Session) -> None:
     # But if you don't want to use migrations, create
     # the tables un-commenting the next line
     # Base.metadata.create_all(bind=engine)
+
+    monthly_db_data, quarterly_db_data = get_DBnomics_data()
+
+    for row in monthly_db_data.itertuples(index=False):
+        monthly_data_in = schemas.MonthlyIndicatorCreate(
+            period=row[0],
+            country=row[1],
+            bci=row[2],
+            cci=row[3],
+            government_reserves=row[4],
+            industrial_production=row[5],
+            inflation_index=row[6],
+            inflation_growth_rate=row[7],
+            long_term_interest=row[8],
+            ppi_index=row[9],
+            ppi_growth_rate=row[10],
+            share_price=row[11],
+            short_term_interest=row[12],
+            trade_in_goods=row[13],
+            unemployment_rate=row[14],
+        )
+        crud.monthly_indicator.create(db, obj_in=monthly_data_in)
+
+    for row in quarterly_db_data.itertuples(index=False):
+        quarterly_data_in = schemas.QuarterlyIndicatorCreate(
+            period=row[0], country=row[1], qgdp=row[2]
+        )
+        crud.quarterly_indicator.create(db, obj_in=quarterly_data_in)
+
     if settings.db.FIRST_SUPERUSER:
         user = crud.user.get_by_email(db, email=settings.db.FIRST_SUPERUSER)
         if not user:
