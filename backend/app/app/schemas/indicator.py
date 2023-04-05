@@ -1,10 +1,11 @@
 from pydantic import BaseModel
 
 from typing import Sequence
+from datetime import date
 
 
 class IndicatorBase(BaseModel):
-    period: str
+    period: date
     country: str
 
 
