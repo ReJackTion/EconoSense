@@ -38,17 +38,20 @@ def fetch_monthly_indicators(
     return result
 
 
-# @router.get("/search/", status_code=200, response_model=MonthlyIndicatorSearchResults)
-# async def search_recipes(
-#     *,
-#     keyword: str = Query(None, min_length=3, example="chicken"),
-#     max_results: Optional[int] = 10,
-#     db: Session = Depends(deps.get_db),
-# ) -> dict:
-#     """
-#     Search for recipes based on label keyword
-#     """
-#     recipes = crud.recipe.get_multi(db=db, limit=max_results)
-#     results = filter(lambda recipe: keyword.lower() in recipe.label.lower(), recipes)
+@router.get("/all_country_list", status_code=200)
+def fetch_monthly_indicators(
+    *,
+    db: Session = Depends(deps.get_db),
+) -> Any:
+    """
+    Fetch all indicators of that country
+    """
+    result = crud.monthly_indicator.get_all_country_list(db=db)
+    if not result:
+        # the exception is raised, not returned - you will get a validation
+        # error otherwise.
+        raise HTTPException(
+            status_code=404, detail=f"There is no country in the database"
+        )
 
-#     return {"results": list(results)}
+    return result

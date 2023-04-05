@@ -70,6 +70,10 @@ class CRUDMonthlyIndicator(
 
         return result
 
+    def get_all_country_list(self, db: Session, *, skip: int = 0, limit: int = 5000):
+        result = db.query(self.model.country).distinct().offset(skip).limit(limit).all()
+        return result
+
 
 class CRUDQuarterlyIndicator(
     CRUDBase[QuarterlyIndicator, QuarterlyIndicatorCreate, QuarterlyIndicatorUpdate]
