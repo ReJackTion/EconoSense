@@ -3,4 +3,4 @@
 from app.db.base_class import Base  # noqa
 from app.models.user import User  # noqa
 from app.models.recipe import Recipe  # noqa
-from app.models.indicator import MonthlyIndicator, QuarterlyIndicator  # noqa
+from app.models.indicator import Indicator  # noqa
