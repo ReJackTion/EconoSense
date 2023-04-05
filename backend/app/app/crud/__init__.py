@@ -1,3 +1,3 @@
 from .crud_recipe import recipe
 from .crud_user import user
-from .crud_indicator import monthly_indicator, quarterly_indicator
+from .crud_indicator import indicator
