@@ -3,18 +3,11 @@ from typing import Union
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
-from app.models.indicator import MonthlyIndicator, QuarterlyIndicator
-from app.schemas.indicator import (
-    MonthlyIndicatorCreate,
-    MonthlyIndicatorUpdate,
-    QuarterlyIndicatorCreate,
-    QuarterlyIndicatorUpdate,
-)
+from app.models.indicator import Indicator
+from app.schemas.indicator import IndicatorCreate, IndicatorUpdate
 
 
-class CRUDMonthlyIndicator(
-    CRUDBase[MonthlyIndicator, MonthlyIndicatorCreate, MonthlyIndicatorUpdate]
-):
+class CRUDIndicator(CRUDBase[Indicator, IndicatorCreate, IndicatorUpdate]):
     def get_by_country(
         self,
         db: Session,
@@ -75,11 +68,4 @@ class CRUDMonthlyIndicator(
         return result
 
 
-class CRUDQuarterlyIndicator(
-    CRUDBase[QuarterlyIndicator, QuarterlyIndicatorCreate, QuarterlyIndicatorUpdate]
-):
-    pass
-
-
-monthly_indicator = CRUDMonthlyIndicator(MonthlyIndicator)
-quarterly_indicator = CRUDQuarterlyIndicator(QuarterlyIndicator)
+indicator = CRUDIndicator(Indicator)

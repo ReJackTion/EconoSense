@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+from sklearn.preprocessing import MinMaxScaler
 from app.api.deps import get_dbnomics_client
 from sqlalchemy.orm import Session
 
@@ -25,11 +26,94 @@ def rename_col_Name(df: pd.DataFrame) -> pd.DataFrame:
     return new_df
 
 
+def compute_pct_chg_and_norm_risk(
+    monthly_data: pd.DataFrame, quarterly_data: pd.DataFrame
+) -> pd.DataFrame:
+    monthly_data["period"] = pd.to_datetime(monthly_data["period"]).dt.date
+    monthly_data.set_index("period", inplace=True)
+
+    quarterly_data["period"] = pd.to_datetime(quarterly_data["period"]).dt.to_period(
+        "Q"
+    )
+    quarterly_data.set_index("period", inplace=True)
+
+    pc_monthly_data = monthly_data.pct_change() * 100
+    pc_quarterly_data = quarterly_data.pct_change() * 100
+
+    scaler1 = MinMaxScaler()
+    scaler2 = MinMaxScaler()
+    scaler1.fit(pc_monthly_data)
+    scaler2.fit(pc_quarterly_data)
+    nor_monthly_data = pd.DataFrame(
+        scaler1.transform(pc_monthly_data), columns=pc_monthly_data.columns
+    )
+    nor_quarterly_data = pd.DataFrame(
+        scaler2.transform(pc_quarterly_data), columns=pc_quarterly_data.columns
+    )
+
+    pc_monthly_data = pc_monthly_data.add_suffix("_pct_chg")
+    pc_quarterly_data = pc_quarterly_data.add_suffix("_pct_chg")
+    nor_monthly_data = nor_monthly_data.add_suffix("_nor")
+    nor_quarterly_data = nor_quarterly_data.add_suffix("_nor")
+
+    nor_monthly_data = nor_monthly_data * 100
+    nor_quarterly_data = nor_quarterly_data * 100
+    nor_monthly_data["period"] = pc_monthly_data.index
+    nor_quarterly_data["period"] = pc_quarterly_data.index
+    nor_monthly_data.set_index("period", inplace=True)
+    nor_quarterly_data.set_index("period", inplace=True)
+
+    monthly_data = pd.concat(
+        [pd.concat([monthly_data, pc_monthly_data], axis=1), nor_monthly_data], axis=1
+    )
+    quarterly_data = pd.concat(
+        [pd.concat([quarterly_data, pc_quarterly_data], axis=1), nor_quarterly_data],
+        axis=1,
+    )
+
+    quarterly_data = quarterly_data.resample("M").ffill()
+    quarterly_data.index = quarterly_data.index.strftime("%Y-%m")
+    quarterly_data.reset_index(inplace=True)
+    quarterly_data["period"] = pd.to_datetime(quarterly_data["period"]).dt.date
+    quarterly_data.set_index("period", inplace=True)
+
+    return monthly_data, quarterly_data
+
+
+def get_common_country(
+    monthly_data: pd.DataFrame, quarterly_data: pd.DataFrame
+) -> pd.DataFrame:
+    # get the list of countries in Quarterly GDP dataframe
+    gdp_countries = set([col.split(" – ")[0] for col in quarterly_data.columns])
+
+    # get the list of countries in economic indicators dataframe
+    ei_countries = set([col.split(" – ")[0] for col in monthly_data.columns])
+
+    # get the intersection of two sets
+    common_countries = gdp_countries.intersection(ei_countries)
+    common_countries.remove("European Union")
+    common_countries.remove("OECD - Europe")
+    common_countries.remove("OECD - Total")
+
+    # select only the columns with common countries from economic indicators dataframe
+    monthly_common = monthly_data[
+        [col for col in monthly_data.columns if col.split(" – ")[0] in common_countries]
+    ]
+    quarterly_common = quarterly_data[
+        [
+            col
+            for col in quarterly_data.columns
+            if col.split(" – ")[0] in common_countries
+        ]
+    ]
+    return monthly_common, quarterly_common
+
+
 def format_to_DBdata(ori_df: pd.DataFrame) -> pd.DataFrame:
 
     # Convert from sting to date format
+    ori_df.reset_index(inplace=True)
     ori_df["period"] = pd.to_datetime(ori_df["period"]).dt.date
-
     # Melt the DataFrame
     df = ori_df.melt(id_vars=["period"], var_name="column")
 
@@ -44,8 +128,6 @@ def format_to_DBdata(ori_df: pd.DataFrame) -> pd.DataFrame:
 
     # Rename the columns
     df.columns.name = None
-
-    # fill NaN values with 0
     df.fillna(0, inplace=True)
 
     return df
@@ -77,91 +159,69 @@ def transform(monthly_data: pd.DataFrame, quarterly_data: pd.DataFrame) -> pd.Da
         monthly_data = rename_col_Name(monthly_data)
         quarterly_data = rename_col_Name(quarterly_data)
 
-        # get the list of countries in Quarterly GDP dataframe
-        gdp_countries = set([col.split(" – ")[0] for col in quarterly_data.columns])
+        monthly_data, quarterly_data = compute_pct_chg_and_norm_risk(
+            monthly_data, quarterly_data
+        )
 
-        # get the list of countries in economic indicators dataframe
-        ei_countries = set([col.split(" – ")[0] for col in monthly_data.columns])
+        monthly_common, quarterly_common = get_common_country(
+            monthly_data, quarterly_data
+        )
+        combined_data = pd.concat([monthly_common, quarterly_common], axis=1)
 
-        # get the intersection of two sets
-        common_countries = gdp_countries.intersection(ei_countries)
-        print(common_countries)
-        common_countries.remove("European Union")
-        common_countries.remove("OECD - Europe")
-        common_countries.remove("OECD - Total")
-
-        # select only the columns with common countries from economic indicators dataframe
-        economic_indicators_common = monthly_data[
-            [
-                col
-                for col in monthly_data.columns
-                if col.split(" – ")[0] in common_countries
-            ]
-        ]
-        gdp_common = quarterly_data[
-            [
-                col
-                for col in quarterly_data.columns
-                if col.split(" – ")[0] in common_countries
-            ]
-        ]
-
-        monthly_db_data = format_to_DBdata(economic_indicators_common)
-        quarterly_db_data = format_to_DBdata(gdp_common)
-        monthly_db_data.columns = [
-            "period",
-            "country",
-            "bci",
-            "cci",
-            "government_reserves",
-            "industrial_production",
-            "inflation_index",
-            "inflation_growth_rate",
-            "long_term_interest",
-            "ppi_index",
-            "ppi_growth_rate",
-            "share_price",
-            "short_term_interest",
-            "trade_in_goods",
-            "unemployment_rate",
-        ]
+        db_data = format_to_DBdata(combined_data)
 
     except Exception as e:
         logger.error(e)
         raise e
 
-    return monthly_db_data, quarterly_db_data
+    return db_data
 
 
-def load(
-    db: Session, monthly_db_data: pd.DataFrame, quarterly_db_data: pd.DataFrame
-) -> None:
+def load(db: Session, db_data: pd.DataFrame) -> None:
     try:
-        for row in monthly_db_data.itertuples(index=False):
-            monthly_data_in = schemas.MonthlyIndicatorCreate(
+        for row in db_data.itertuples(index=False):
+            indicator_data_in = schemas.IndicatorCreate(
                 period=row[0],
                 country=row[1],
                 bci=row[2],
-                cci=row[3],
-                government_reserves=row[4],
-                industrial_production=row[5],
-                inflation_index=row[6],
-                inflation_growth_rate=row[7],
-                long_term_interest=row[8],
-                ppi_index=row[9],
-                ppi_growth_rate=row[10],
-                share_price=row[11],
-                short_term_interest=row[12],
-                trade_in_goods=row[13],
-                unemployment_rate=row[14],
+                bci_nor=row[3],
+                bci_pc=row[4],
+                cci=row[5],
+                cci_nor=row[6],
+                cci_pc=row[7],
+                government_reserves=row[8],
+                government_reserves_nor=row[9],
+                government_reserves_pc=row[10],
+                industrial_production=row[11],
+                industrial_production_nor=row[12],
+                industrial_production_pc=row[13],
+                inflation_growth_rate=row[14],
+                inflation_growth_rate_nor=row[15],
+                inflation_growth_rate_pc=row[16],
+                long_term_interest=row[17],
+                long_term_interest_nor=row[18],
+                long_term_interest_pc=row[19],
+                ppi_growth_rate=row[20],
+                ppi_growth_rate_nor=row[21],
+                ppi_growth_rate_pc=row[22],
+                qgdp=row[23],
+                qgdp_nor=row[24],
+                qgdp_pc=row[25],
+                share_price=row[26],
+                share_price_nor=row[27],
+                share_price_pc=row[28],
+                short_term_interest=row[29],
+                short_term_interest_nor=row[30],
+                short_term_interest_pc=row[31],
+                trade_in_goods=row[32],
+                trade_in_goods_nor=row[33],
+                trade_in_goods_pc=row[34],
+                unemployment_rate=row[35],
+                unemployment_rate_nor=row[36],
+                unemployment_rate_pc=row[37],
             )
-            crud.monthly_indicator.create(db, obj_in=monthly_data_in)
+            crud.indicator.create(db, obj_in=indicator_data_in)
 
-        for row in quarterly_db_data.itertuples(index=False):
-            quarterly_data_in = schemas.QuarterlyIndicatorCreate(
-                period=row[0], country=row[1], qgdp=row[2]
-            )
-            crud.quarterly_indicator.create(db, obj_in=quarterly_data_in)
     except Exception as e:
         logger.error(e)
         raise e
@@ -172,8 +232,8 @@ def etl(db: Session) -> None:
     monthly_data, quarterly_data = extract()
     logger.info("Extraction done!")
     logger.info("Transforming DBnomics data")
-    monthly_data, quarterly_data = transform(monthly_data, quarterly_data)
+    db_data = transform(monthly_data, quarterly_data)
     logger.info("Transforming done!")
     logger.info("Loading DBnomics data")
-    load(db, monthly_data, quarterly_data)
+    load(db, db_data)
     logger.info("Loading done!")

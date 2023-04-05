@@ -7,15 +7,13 @@ from sqlalchemy.orm import Session
 
 from app import crud
 from app.api import deps
-from app.schemas.indicator import MonthlyIndicator
+from app.schemas.indicator import Indicator
 
 router = APIRouter()
 
 
-@router.get(
-    "/monthly/{country}", status_code=200, response_model=list[MonthlyIndicator]
-)
-def fetch_monthly_indicators(
+@router.get("/indicators/{country}", status_code=200, response_model=list[Indicator])
+def fetch_indicators(
     *,
     country: str,
     start_date: str = None,
@@ -25,7 +23,7 @@ def fetch_monthly_indicators(
     """
     Fetch all indicators of that country
     """
-    result = crud.monthly_indicator.get_by_country(
+    result = crud.indicator.get_by_country(
         db=db, country=country, start_date=start_date, end_date=end_date
     )
     if not result:
@@ -39,14 +37,14 @@ def fetch_monthly_indicators(
 
 
 @router.get("/all_country_list", status_code=200)
-def fetch_monthly_indicators(
+def fetch_indicators(
     *,
     db: Session = Depends(deps.get_db),
 ) -> Any:
     """
     Fetch all indicators of that country
     """
-    result = crud.monthly_indicator.get_all_country_list(db=db)
+    result = crud.indicator.get_all_country_list(db=db)
     if not result:
         # the exception is raised, not returned - you will get a validation
         # error otherwise.
