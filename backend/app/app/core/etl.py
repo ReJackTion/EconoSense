@@ -76,6 +76,10 @@ def get_DBnomics_data():
     monthly_db_data = makeDBdata(economic_indicators_common)
     quarterly_db_data = makeDBdata(gdp_common)
 
+    # fill NaN values with 0
+    monthly_db_data.fillna(0, inplace=True)
+    quarterly_db_data.fillna(0, inplace=True)
+
     return monthly_db_data, quarterly_db_data
 
     # # Create a connection to an SQLite database
