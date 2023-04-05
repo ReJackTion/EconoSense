@@ -36,3 +36,22 @@ def fetch_monthly_indicators(
         )
 
     return result
+
+
+@router.get("/all_country_list", status_code=200)
+def fetch_monthly_indicators(
+    *,
+    db: Session = Depends(deps.get_db),
+) -> Any:
+    """
+    Fetch all indicators of that country
+    """
+    result = crud.monthly_indicator.get_all_country_list(db=db)
+    if not result:
+        # the exception is raised, not returned - you will get a validation
+        # error otherwise.
+        raise HTTPException(
+            status_code=404, detail=f"There is no country in the database"
+        )
+
+    return result
