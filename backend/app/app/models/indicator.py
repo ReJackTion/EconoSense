@@ -1,11 +1,11 @@
-from sqlalchemy import Column, Integer, String, FLOAT
+from sqlalchemy import Column, Integer, String, FLOAT, DateTime
 
 from app.db.base_class import Base
 
 
 class MonthlyIndicator(Base):
     id = Column(Integer, primary_key=True, index=True)
-    period = Column(String(256), nullable=False)
+    period = Column(DateTime, nullable=False)
     country = Column(String(256), nullable=False)
     bci = Column(FLOAT(precision=32), nullable=True)
     cci = Column(FLOAT(precision=32), nullable=True)
@@ -24,6 +24,6 @@ class MonthlyIndicator(Base):
 
 class QuarterlyIndicator(Base):
     id = Column(Integer, primary_key=True, index=True)
-    period = Column(String(256), nullable=False)
+    period = Column(DateTime, nullable=False)
     country = Column(String(256), nullable=False)
     qgdp = Column(FLOAT(precision=32), nullable=True)
