@@ -36,19 +36,3 @@ def fetch_monthly_indicators(
         )
 
     return result
-
-
-# @router.get("/search/", status_code=200, response_model=MonthlyIndicatorSearchResults)
-# async def search_recipes(
-#     *,
-#     keyword: str = Query(None, min_length=3, example="chicken"),
-#     max_results: Optional[int] = 10,
-#     db: Session = Depends(deps.get_db),
-# ) -> dict:
-#     """
-#     Search for recipes based on label keyword
-#     """
-#     recipes = crud.recipe.get_multi(db=db, limit=max_results)
-#     results = filter(lambda recipe: keyword.lower() in recipe.label.lower(), recipes)
-
-#     return {"results": list(results)}
