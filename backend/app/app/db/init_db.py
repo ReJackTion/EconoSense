@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from app import crud, schemas
 from app.db import base  # noqa: F401
 from app.core.config import settings
-from app.core.preprocessing import get_DBnomics_data
+from app.core.etl import get_DBnomics_data
 
 logger = logging.getLogger(__name__)
 
