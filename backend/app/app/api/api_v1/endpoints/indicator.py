@@ -52,4 +52,10 @@ def fetch_indicators(
             status_code=404, detail=f"There is no country in the database"
         )
 
-    return result
+    country_list = []
+    for country in result:
+        country_list.append(country["country"])
+
+    res = {"country_list": country_list}
+
+    return res
