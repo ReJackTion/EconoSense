@@ -2,6 +2,7 @@
 import { Flex, Stat, StatLabel, StatNumber, useColorModeValue, Text } from '@chakra-ui/react';
 // Custom components
 import Card from 'components/card/Card';
+import Gauge from 'components/gaugeChart/Gauge';
 
 export default function Default(props: {
 	startContent?: JSX.Element;
@@ -9,8 +10,10 @@ export default function Default(props: {
 	name: string;
 	growth?: string | number;
 	value: string | number;
+	id?: string;
+	risk?: number;
 }) {
-	const { startContent, endContent, name, growth, value } = props;
+	const { startContent, endContent, name, growth, value, id, risk } = props;
 	const textColor = useColorModeValue('secondaryGray.900', 'white');
 	const textColorSecondary = 'secondaryGray.600';
 
@@ -49,6 +52,7 @@ export default function Default(props: {
 							</Text>
 						</Flex>
 					) : null}
+					{id ? (<Gauge id={id} risk={risk} />) : null}
 				</Stat>
 				<Flex ms='auto' w='max-content'>
 					{endContent}

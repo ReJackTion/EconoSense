@@ -1,5 +1,3 @@
-
-
 import {
   Avatar,
   Box,
@@ -8,51 +6,65 @@ import {
   Icon,
   Select,
   SimpleGrid,
-  useColorModeValue
-} from '@chakra-ui/react'
+  useColorModeValue,
+} from "@chakra-ui/react";
 // Assets
 // Custom components
-import MiniCalendar from 'components/calendar/MiniCalendar'
-import MiniStatistics from 'components/card/MiniStatistics'
-import IconBox from 'components/icons/IconBox'
+import MiniCalendar from "components/calendar/MiniCalendar";
+import MiniStatistics from "components/card/MiniStatistics";
+import Card from "components/card/Card";
+import Indicators from "../../components/indicators/Indicators";
+import SelectCountry from "components/indicators/SelectCountry";
+import IconBox from "components/icons/IconBox";
 import {
   MdAddTask,
   MdAttachMoney,
   MdBarChart,
-  MdFileCopy
-} from 'react-icons/md'
-import CheckTable from 'views/user/default/components/CheckTable'
-import ComplexTable from 'views/user/default/components/ComplexTable'
-import DailyTraffic from 'views/user/default/components/DailyTraffic'
-import PieCard from 'views/user/default/components/PieCard'
-import Tasks from 'views/user/default/components/Tasks'
-import TotalSpent from 'views/user/default/components/TotalSpent'
-import WeeklyRevenue from 'views/user/default/components/WeeklyRevenue'
+  MdFileCopy,
+} from "react-icons/md";
+import CheckTable from "views/user/default/components/CheckTable";
+import ComplexTable from "views/user/default/components/ComplexTable";
+import DailyTraffic from "views/user/default/components/DailyTraffic";
+import PieCard from "views/user/default/components/PieCard";
+import Tasks from "views/user/default/components/Tasks";
+import TotalSpent from "views/user/default/components/TotalSpent";
+import WeeklyRevenue from "views/user/default/components/WeeklyRevenue";
 import {
   columnsDataCheck,
   columnsDataComplex,
-  TableData
-} from 'views/user/default/variables/columnsData'
-import tableDataCheck from 'views/user/default/variables/tableDataCheck.json'
-import tableDataComplex from 'views/user/default/variables/tableDataComplex.json'
-import { isWindowAvailable } from 'utils/navigation'
-import UserLayout from 'layouts/user'
-import { Image } from 'components/image/Image'
+  TableData,
+} from "views/user/default/variables/columnsData";
+import tableDataCheck from "views/user/default/variables/tableDataCheck.json";
+import tableDataComplex from "views/user/default/variables/tableDataComplex.json";
+import { isWindowAvailable } from "utils/navigation";
+import UserLayout from "layouts/user";
+import { Image } from "components/image/Image";
+import React, { useState, useEffect, ChangeEvent } from "react";
 
-export default function UserReports () {
+export default function UserReports() {
   // Chakra Color Mode
 
-  const brandColor = useColorModeValue('brand.500', 'white')
-  const boxBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.100')
+  const brandColor = useColorModeValue("brand.500", "white");
+  const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
+  const [country, setCountry] = useState("United States");
+
+  const countryOnChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = event.target;
+    setCountry(value);
+  };
 
   return (
     <UserLayout>
-      <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+      <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
         <>
+          <SelectCountry
+            country={country}
+            onChange={(event) => countryOnChangeHandler(event)}
+          />
           <SimpleGrid
-            columns={{ base: 1, md: 2, lg: 3, '2xl': 6 }}
-            gap='20px'
-            mb='20px'
+            columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
+            gap="20px"
+            mb="20px"
           >
             {/* <MiniStatistics
               startContent={
@@ -92,9 +104,15 @@ export default function UserReports () {
               name='Spend this month'
               value='$642.39'
             /> */}
-            <MiniStatistics growth='+23%' name='Sales' value='$574.34' />
-            <MiniStatistics growth='+23%' name='Sales' value='$574.34' />
-            <MiniStatistics growth='+23%' name='Sales' value='$574.34' />
+            {/* <Card py='15px'>
+              <MiniStatistics growth='+21%' name='BCI' value='101.2' id="id1" risk={0.4} />
+              <MiniStatistics growth='+22%' name='CCI' value='104.5' id="id2" risk={0.5} />
+              <MiniStatistics growth='+23%' name='CPI' value='120.9' id="id3" risk={0.6} />
+            </Card>
+            <Card py='15px'></Card>
+            <Card py='15px'></Card> */}
+            <Indicators selected_country={country} />
+
             {/* <MiniStatistics
               endContent={
                 <Flex me='-16px' mt='10px'>
@@ -152,19 +170,19 @@ export default function UserReports () {
             /> */}
           </SimpleGrid>
 
-          <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px' mb='20px'>
+          <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px" mb="20px">
+            {/* <TotalSpent />
             <TotalSpent />
             <TotalSpent />
-            <TotalSpent />
-            <TotalSpent />
+            <TotalSpent /> */}
             {/* <WeeklyRevenue /> */}
           </SimpleGrid>
-          {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
+          {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
             <CheckTable
               columnsData={columnsDataCheck}
-              tableData={(tableDataCheck as unknown) as TableData[]}
+              tableData={tableDataCheck as unknown as TableData[]}
             />
-            <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px'>
+            <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px">
               <DailyTraffic />
               <PieCard />
             </SimpleGrid>
@@ -182,5 +200,5 @@ export default function UserReports () {
         </>
       </Box>
     </UserLayout>
-  )
+  );
 }
