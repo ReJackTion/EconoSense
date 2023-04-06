@@ -21,11 +21,11 @@ const getIndicators = async (country: string, start_date?: string, end_date?:str
     return res.data
   }
 
-  const getLatestIndicators = async (country: string, start_date?: string, end_date?:string): Promise<any> => {
+  const getMonthIndicators = async (country: string, start_date?: string, end_date?:string): Promise<any> => {
     
-    const monthIndex = String(new Date().getMonth()).padStart(2, '0');
+    const monthIndex = String(new Date().getMonth()-1).padStart(2, '0');
     const yearIndex = new Date().getFullYear();
-    const request_url = `${BACKEND_URL}${API_ENDPOINT}${country}?start_date=${yearIndex}-${monthIndex}-01`
+    const request_url = `${BACKEND_URL}${API_ENDPOINT}${country}?start_date=${yearIndex}-${monthIndex}-01&end_date=${yearIndex}-${monthIndex}-01`
 
     const res = await axios.get(request_url)
     return res.data
@@ -33,7 +33,7 @@ const getIndicators = async (country: string, start_date?: string, end_date?:str
   
   const Indicator_API = {
     getIndicators,
-    getLatestIndicators
+    getMonthIndicators
   }
   
   export default Indicator_API
