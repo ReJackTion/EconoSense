@@ -12,7 +12,9 @@ from app.schemas.indicator import Indicator
 router = APIRouter()
 
 
-@router.get("/all/{country}", status_code=200, response_model=list[Indicator])
+@router.get(
+    "/all_indicators/{country}", status_code=200, response_model=list[Indicator]
+)
 def fetch_indicators(
     *,
     country: str,
@@ -42,7 +44,7 @@ def fetch_indicators(
     db: Session = Depends(deps.get_db),
 ) -> Any:
     """
-    Fetch all indicators of that country
+    Fetch list of all country in DB
     """
     result = crud.indicator.get_all_country_list(db=db)
     if not result:
