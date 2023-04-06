@@ -56,6 +56,6 @@ def fetch_indicators(
     for country in result:
         country_list.append(country["country"])
 
-    res = {"country_list": country_list}
+    res = {"country_list": sorted(country_list)}
 
     return res
