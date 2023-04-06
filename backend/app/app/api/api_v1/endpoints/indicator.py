@@ -12,7 +12,7 @@ from app.schemas.indicator import Indicator
 router = APIRouter()
 
 
-@router.get("/{country}", status_code=200, response_model=list[Indicator])
+@router.get("/all/{country}", status_code=200, response_model=list[Indicator])
 def fetch_indicators(
     *,
     country: str,
