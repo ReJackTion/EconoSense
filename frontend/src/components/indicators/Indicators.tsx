@@ -8,12 +8,13 @@ import Card from "components/card/Card";
 
 interface Props {
   selected_country: string;
+  selected_period: string;
 }
 
 export default function Indicators(props: Props) {
-  const { selected_country } = props;
+  const { selected_country, selected_period } = props;
   const { data, error, isLoading } = useSWR(
-    selected_country,
+    `${selected_country}?start_date=${selected_period}&end_date=${selected_period}`,
     Indicator_API.getMonthIndicators
   );
 

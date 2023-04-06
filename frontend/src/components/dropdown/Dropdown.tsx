@@ -28,7 +28,11 @@ export default function Dropdown(props: Props) {
           required={required}
         >
           {options.length ? (
-            options.map((item, index) => <option value={item}>{item}</option>)
+            options.map((item, index) => (
+              <option value={item} key={item}>
+                {item}
+              </option>
+            ))
           ) : (
             <></>
           )}

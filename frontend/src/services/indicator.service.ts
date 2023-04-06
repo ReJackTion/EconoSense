@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_PROD_BACKEND_URL
-const API_ENDPOINT = '/indicators/all/'
+const API_ENDPOINT = '/indicators/all_indicators/'
 
 const getIndicators = async (country: string, start_date?: string, end_date?:string): Promise<any> => {
     
@@ -21,11 +21,9 @@ const getIndicators = async (country: string, start_date?: string, end_date?:str
     return res.data
   }
 
-  const getMonthIndicators = async (country: string, start_date?: string, end_date?:string): Promise<any> => {
+  const getMonthIndicators = async (query: string): Promise<any> => {
     
-    const monthIndex = String(new Date().getMonth()-1).padStart(2, '0');
-    const yearIndex = new Date().getFullYear();
-    const request_url = `${BACKEND_URL}${API_ENDPOINT}${country}?start_date=${yearIndex}-${monthIndex}-01&end_date=${yearIndex}-${monthIndex}-01`
+    const request_url = `${BACKEND_URL}${API_ENDPOINT}${query}`
 
     const res = await axios.get(request_url)
     return res.data

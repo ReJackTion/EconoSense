@@ -1,44 +1,10 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  FormLabel,
-  Icon,
-  Select,
-  SimpleGrid,
-  useColorModeValue,
-} from "@chakra-ui/react";
+import { Box, SimpleGrid, useColorModeValue } from "@chakra-ui/react";
 // Assets
 // Custom components
-import MiniCalendar from "components/calendar/MiniCalendar";
-import MiniStatistics from "components/card/MiniStatistics";
-import Card from "components/card/Card";
 import Indicators from "../../components/indicators/Indicators";
-import SelectCountry from "components/indicators/SelectCountry";
-import IconBox from "components/icons/IconBox";
-import {
-  MdAddTask,
-  MdAttachMoney,
-  MdBarChart,
-  MdFileCopy,
-} from "react-icons/md";
-import CheckTable from "views/user/default/components/CheckTable";
-import ComplexTable from "views/user/default/components/ComplexTable";
-import DailyTraffic from "views/user/default/components/DailyTraffic";
-import PieCard from "views/user/default/components/PieCard";
-import Tasks from "views/user/default/components/Tasks";
-import TotalSpent from "views/user/default/components/TotalSpent";
-import WeeklyRevenue from "views/user/default/components/WeeklyRevenue";
-import {
-  columnsDataCheck,
-  columnsDataComplex,
-  TableData,
-} from "views/user/default/variables/columnsData";
-import tableDataCheck from "views/user/default/variables/tableDataCheck.json";
-import tableDataComplex from "views/user/default/variables/tableDataComplex.json";
-import { isWindowAvailable } from "utils/navigation";
+import SelectCountry from "components/dropdown/SelectCountry";
+import SelectPeriod from "components/dropdown/SelectPeriod";
 import UserLayout from "layouts/user";
-import { Image } from "components/image/Image";
 import React, { useState, useEffect, ChangeEvent } from "react";
 
 export default function UserReports() {
@@ -47,10 +13,19 @@ export default function UserReports() {
   const brandColor = useColorModeValue("brand.500", "white");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const [country, setCountry] = useState("United States");
+  const monthIndex = String(new Date().getMonth() - 1).padStart(2, "0");
+  const yearIndex = new Date().getFullYear();
+  const latestPeriod = `${yearIndex}-${monthIndex}-01`;
+  const [period, setPeriod] = useState(latestPeriod);
 
   const countryOnChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value, name } = event.target;
     setCountry(value);
+  };
+
+  const periodOnChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = event.target;
+    setPeriod(value);
   };
 
   return (
@@ -61,142 +36,17 @@ export default function UserReports() {
             country={country}
             onChange={(event) => countryOnChangeHandler(event)}
           />
+          <SelectPeriod
+            period={period}
+            onChange={(event) => periodOnChangeHandler(event)}
+          />
           <SimpleGrid
             columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
             gap="20px"
             mb="20px"
           >
-            {/* <MiniStatistics
-              startContent={
-                <IconBox
-                  w='56px'
-                  h='56px'
-                  bg={boxBg}
-                  icon={
-                    <Icon
-                      w='32px'
-                      h='32px'
-                      as={MdBarChart}
-                      color={brandColor}
-                    />
-                  }
-                />
-              }
-              name='Earnings'
-              value='$350.4'
-            /> */}
-            {/* <MiniStatistics
-              startContent={
-                <IconBox
-                  w='56px'
-                  h='56px'
-                  bg={boxBg}
-                  icon={
-                    <Icon
-                      w='32px'
-                      h='32px'
-                      as={MdAttachMoney}
-                      color={brandColor}
-                    />
-                  }
-                />
-              }
-              name='Spend this month'
-              value='$642.39'
-            /> */}
-            {/* <Card py='15px'>
-              <MiniStatistics growth='+21%' name='BCI' value='101.2' id="id1" risk={0.4} />
-              <MiniStatistics growth='+22%' name='CCI' value='104.5' id="id2" risk={0.5} />
-              <MiniStatistics growth='+23%' name='CPI' value='120.9' id="id3" risk={0.6} />
-            </Card>
-            <Card py='15px'></Card>
-            <Card py='15px'></Card> */}
-            <Indicators selected_country={country} />
-
-            {/* <MiniStatistics
-              endContent={
-                <Flex me='-16px' mt='10px'>
-                  <FormLabel htmlFor='balance'>
-                    <Box boxSize={'12'}>
-                      <Image src={Usa} alt='' w={'100%'} h={'100%'} />
-                    </Box>
-                  </FormLabel>
-                  <Select
-                    id='balance'
-                    variant='mini'
-                    mt='5px'
-                    me='0px'
-                    defaultValue='usd'
-                  >
-                    <option value='usd'>USD</option>
-                    <option value='eur'>EUR</option>
-                    <option value='gba'>GBA</option>
-                  </Select>
-                </Flex>
-              }
-              name='Your balance'
-              value='$1,000'
-            /> */}
-            {/* <MiniStatistics
-              startContent={
-                <IconBox
-                  w='56px'
-                  h='56px'
-                  bg='linear-gradient(90deg, #4481EB 0%, #04BEFE 100%)'
-                  icon={<Icon w='28px' h='28px' as={MdAddTask} color='white' />}
-                />
-              }
-              name='New Tasks'
-              value='154'
-            /> */}
-            {/* <MiniStatistics
-              startContent={
-                <IconBox
-                  w='56px'
-                  h='56px'
-                  bg={boxBg}
-                  icon={
-                    <Icon
-                      w='32px'
-                      h='32px'
-                      as={MdFileCopy}
-                      color={brandColor}
-                    />
-                  }
-                />
-              }
-              name='Total Projects'
-              value='2935'
-            /> */}
+            <Indicators selected_country={country} selected_period={period} />
           </SimpleGrid>
-
-          <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px" mb="20px">
-            {/* <TotalSpent />
-            <TotalSpent />
-            <TotalSpent />
-            <TotalSpent /> */}
-            {/* <WeeklyRevenue /> */}
-          </SimpleGrid>
-          {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap="20px" mb="20px">
-            <CheckTable
-              columnsData={columnsDataCheck}
-              tableData={tableDataCheck as unknown as TableData[]}
-            />
-            <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap="20px">
-              <DailyTraffic />
-              <PieCard />
-            </SimpleGrid>
-          </SimpleGrid> */}
-          {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
-            <ComplexTable
-              columnsData={columnsDataComplex}
-              tableData={(tableDataComplex as unknown) as TableData[]}
-            />
-            <SimpleGrid columns={{ base: 1, md: 2, xl: 2 }} gap='20px'>
-              <Tasks />
-              <MiniCalendar h='100%' minW='100%' selectRange={false} />
-            </SimpleGrid>
-          </SimpleGrid> */}
         </>
       </Box>
     </UserLayout>

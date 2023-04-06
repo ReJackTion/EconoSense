@@ -1,8 +1,6 @@
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useEffect, ChangeEvent } from "react";
 import useSWR from "swr";
 import CountryList from "services/country_list.service";
-
-import { Select } from "@chakra-ui/react";
 
 import Dropdown from "components/dropdown/Dropdown";
 
