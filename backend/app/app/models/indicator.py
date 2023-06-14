@@ -43,3 +43,4 @@ class Indicator(Base):
     unemployment_rate = Column(FLOAT(precision=32), nullable=True)
     unemployment_rate_nor = Column(FLOAT(precision=32), nullable=True)
     unemployment_rate_pc = Column(FLOAT(precision=32), nullable=True)
+    # stage = Column(String(256), nullable=False)
