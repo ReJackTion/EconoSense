@@ -18,6 +18,7 @@ export default function SelectPeriod(props: Props) {
       value={period}
       onChange={onChange}
       required
+      title="Date"
     />
   );
 }

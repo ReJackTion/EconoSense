@@ -17,7 +17,7 @@ export default function SelectCountry(props: Props) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  if (error) return <div>failed to load</div>;
+  if (error) return <div>Failed to load, data is not available yet.</div>;
   if (isLoading) return <div>loading...</div>;
 
   return (
@@ -28,6 +28,7 @@ export default function SelectCountry(props: Props) {
       value={country}
       onChange={onChange}
       required
+      title="Country"
     />
   );
 }

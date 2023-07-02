@@ -7,9 +7,6 @@ from datetime import date
 class IndicatorBase(BaseModel):
     period: date
     country: str
-
-
-class IndicatorBase(IndicatorBase):
     bci: float
     bci_nor: float
     bci_pc: float
@@ -46,6 +43,11 @@ class IndicatorBase(IndicatorBase):
     unemployment_rate: float
     unemployment_rate_nor: float
     unemployment_rate_pc: float
+    contraction_prob: float
+    expension_prob: float
+    peak_prob: float
+    trough_prob: float
+    prediction: str
 
 
 class IndicatorCreate(IndicatorBase):
