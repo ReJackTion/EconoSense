@@ -12,6 +12,7 @@ from app.db.session import SessionLocal
 from app.models.user import User
 from app.clients.reddit import RedditClient
 from app.clients.dbnomics import DBnomicsClient
+from app.clients.nber import NBERClient
 from app import crud
 
 
@@ -34,6 +35,10 @@ def get_reddit_client() -> RedditClient:
 
 def get_dbnomics_client() -> DBnomicsClient:
     return DBnomicsClient()
+
+
+def get_label_client() -> NBERClient:
+    return NBERClient()
 
 
 def get_email_client() -> EmailClient:

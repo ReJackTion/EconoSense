@@ -55,9 +55,17 @@ export default function Default(props: {
               {value}
             </StatNumber>
           ) : (
-            <Flex my={2}>
-              <Heading size="md">Data not available</Heading>
-            </Flex>
+            // <Flex my={2}>
+            //   <Heading size="md">Data not available</Heading>
+            // </Flex>
+            <StatNumber
+              color={textColor}
+              fontSize={{
+                base: "2xl",
+              }}
+            >
+              Data not available
+            </StatNumber>
           )}
           {value != 0 ? (
             <Flex align="center">
