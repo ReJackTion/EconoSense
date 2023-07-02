@@ -1,6 +1,21 @@
 import React, { useState } from "react";
 import { useTable, useFilters, useSortBy } from "react-table";
 import { CSVLink } from "react-csv";
+import Card from "components/card/Card";
+import { FaSortDown, FaSortUp } from "react-icons/fa";
+
+import {
+  Flex,
+  Table,
+  Tbody,
+  Td,
+  Text,
+  Th,
+  Thead,
+  Tr,
+  Checkbox,
+  useColorModeValue,
+} from "@chakra-ui/react";
 
 interface Column {
   Header: string;
@@ -86,23 +101,58 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
     getVisibleColumns().map((column) => row.values[column.accessor])
   );
 
+  const textColor = useColorModeValue("secondaryGray.900", "white");
+  const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
+
   return (
-    <div>
+    <Card
+      flexDirection="column"
+      w="100%"
+      px="0px"
+      overflowX={{ sm: "scroll", lg: "scroll" }}
+    >
+      <Flex px="25px" justify="space-between" mb="20px" align="center">
+        <Text
+          color={textColor}
+          fontSize="22px"
+          fontWeight="700"
+          lineHeight="100%"
+        >
+          Query Data Table
+        </Text>
+      </Flex>
       <div>
         <div>
           <label>Toggle Columns: </label>
           {columns.map((column) => (
             <label key={column.accessor}>
-              <input
+              {/* <input
                 type="checkbox"
                 checked={visibleColumns.includes(column.accessor)}
                 onChange={() => toggleColumnVisibility(column.accessor)}
-              />{" "}
-              {column.Header}
+              />{" "} */}
+              <Flex align="center">
+                <Checkbox
+                  defaultChecked={true}
+                  colorScheme="brandScheme"
+                  me="10px"
+                  checked={visibleColumns.includes(column.accessor)}
+                  onChange={() => toggleColumnVisibility(column.accessor)}
+                />
+                <Text color={textColor} fontSize="sm" fontWeight="700">
+                  {column.Header}
+                </Text>
+                <input
+                  type="text"
+                  onChange={(e) =>
+                    handleFilterChange(column.accessor, e.target.value)
+                  }
+                />
+              </Flex>
             </label>
           ))}
         </div>
-        <div>
+        {/* <div>
           {columns.map((column) => (
             <div key={column.accessor}>
               <label>{column.Header}: </label>
@@ -114,19 +164,19 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
               />
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
 
-      <table {...getTableProps()}>
-        <thead>
+      <Table {...getTableProps()} variant="simple" color="gray.500" mb="24px">
+        <Thead>
           {headerGroups.map((headerGroup) => (
-            <tr
+            <Tr
               {...headerGroup.getHeaderGroupProps()}
               key={String(headerGroup)}
             >
               {headerGroup.headers.map((column, index) =>
                 visibleColumns.includes(column.id) ? (
-                  <th
+                  <Th
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                     className={
                       column.isSorted
@@ -136,44 +186,62 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
                         : ""
                     }
                     key={index}
+                    pe="10px"
+                    borderColor={borderColor}
                   >
-                    {column.render("Header")}
-                    <span>
-                      {column.isSorted ? (
-                        column.isSortedDesc ? (
-                          <i className="fas fa-sort-down"></i>
+                    <Flex
+                      justify="space-between"
+                      align="center"
+                      fontSize={{ sm: "10px", lg: "12px" }}
+                      color="gray.400"
+                    >
+                      {column.render("Header")}
+                      <span>
+                        {column.isSorted ? (
+                          column.isSortedDesc ? (
+                            <FaSortDown />
+                          ) : (
+                            <FaSortUp />
+                          )
                         ) : (
-                          <i className="fas fa-sort-up"></i>
-                        )
-                      ) : (
-                        ""
-                      )}
-                    </span>
-                  </th>
+                          ""
+                        )}
+                      </span>
+                    </Flex>
+                  </Th>
                 ) : (
                   <></>
                 )
               )}
-            </tr>
+            </Tr>
           ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
+        </Thead>
+        <Tbody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <Tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render("Cell")}</td>
+                  <Td
+                    {...cell.getCellProps()}
+                    fontSize={{ sm: "14px" }}
+                    minW={{ sm: "150px", md: "200px", lg: "auto" }}
+                    borderColor="transparent"
+                  >
+                    <Text color={textColor} fontSize="sm" fontWeight="700">
+                      {cell.render("Cell")}
+                    </Text>
+                  </Td>
                 ))}
-              </tr>
+              </Tr>
             );
           })}
-        </tbody>
-      </table>
+        </Tbody>
+      </Table>
       <CSVLink data={csvData} headers={csvHeaders}>
         Export to CSV
       </CSVLink>
-    </div>
+    </Card>
   );
 };
 

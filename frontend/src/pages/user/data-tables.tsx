@@ -120,11 +120,11 @@ export default function DataTables() {
           columnsData={columnsDataCheck}
           tableData={tableDataCheck as unknown as TableData[]}
         /> */}
-        <ColumnsTable
+        {/* <ColumnsTable
           columnsData={columnsDataColumns}
           // tableData={tableDataColumns as unknown as TableData[]}
           tableData={fake_data as unknown as any}
-        />
+        /> */}
         <TestTable data={fake_data} columns={columnsDataColumns} />
         {/* <ComplexTable
           columnsData={columnsDataComplex}
