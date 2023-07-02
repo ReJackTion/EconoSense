@@ -7,7 +7,7 @@ from loguru import logger
 from pydantic import AnyHttpUrl, BaseSettings, EmailStr, validator
 from typing import List, Optional, Union
 
-from app.core.logging import InterceptHandler
+from app.core.logging_core import InterceptHandler
 
 
 load_dotenv()

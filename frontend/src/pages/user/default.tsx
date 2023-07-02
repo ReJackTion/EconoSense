@@ -40,13 +40,8 @@ export default function UserReports() {
             period={period}
             onChange={(event) => periodOnChangeHandler(event)}
           />
-          <SimpleGrid
-            columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
-            gap="20px"
-            mb="20px"
-          >
-            <Indicators selected_country={country} selected_period={period} />
-          </SimpleGrid>
+
+          <Indicators selected_country={country} selected_period={period} />
         </>
       </Box>
     </UserLayout>

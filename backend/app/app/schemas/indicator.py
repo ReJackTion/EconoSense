@@ -43,7 +43,11 @@ class IndicatorBase(BaseModel):
     unemployment_rate: float
     unemployment_rate_nor: float
     unemployment_rate_pc: float
-    # stage: str
+    contraction_prob: float
+    expension_prob: float
+    peak_prob: float
+    trough_prob: float
+    prediction: str
 
 
 class IndicatorCreate(IndicatorBase):

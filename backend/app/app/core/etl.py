@@ -7,6 +7,8 @@ from sqlalchemy.orm import Session
 
 from app import crud, schemas
 
+from app.core.ml_prediction import get_predictions
+
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -234,14 +236,13 @@ def transform(
 
         db_data = format_to_DBdata(combined_data)
 
-        # final_db_data = pd.concat([db_data, label_data], axis=1)
+        final_db_data = get_predictions(db_data=db_data)
 
     except Exception as e:
         logger.error(e)
         raise e
 
-    # return final_db_data
-    return db_data
+    return final_db_data
 
 
 def load(db: Session, db_data: pd.DataFrame) -> None:
@@ -286,9 +287,14 @@ def load(db: Session, db_data: pd.DataFrame) -> None:
                 unemployment_rate=row[35],
                 unemployment_rate_nor=row[36],
                 unemployment_rate_pc=row[37],
-                # stage=row[38],
+                contraction_prob=row[38],
+                expension_prob=row[39],
+                peak_prob=row[40],
+                trough_prob=row[41],
+                prediction=row[42],
             )
             crud.indicator.create(db, obj_in=indicator_data_in)
+            print(indicator_data_in)
 
     except Exception as e:
         logger.error(e)
