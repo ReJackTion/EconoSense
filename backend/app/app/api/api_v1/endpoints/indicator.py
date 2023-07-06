@@ -61,3 +61,22 @@ def fetch_indicators(
     res = {"country_list": sorted(country_list)}
 
     return res
+
+
+@router.get("/all_data", status_code=200)
+def fetch_all_data(
+    *,
+    db: Session = Depends(deps.get_db),
+) -> Any:
+    """
+    Fetch list of all data in DB
+    """
+    result = crud.indicator.get_all_data(db=db)
+    if not result:
+        # the exception is raised, not returned - you will get a validation
+        # error otherwise.
+        raise HTTPException(
+            status_code=404, detail=f"There is no country in the database"
+        )
+
+    return result

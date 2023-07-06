@@ -3,8 +3,13 @@ import { useTable, useFilters, useSortBy } from "react-table";
 import { CSVLink } from "react-csv";
 import Card from "components/card/Card";
 import { FaSortDown, FaSortUp } from "react-icons/fa";
+import { FcDownload } from "react-icons/fc";
+import ValueRangeColumnFilter from "components/input/slider";
 
 import {
+  Box,
+  Stack,
+  Button,
   Flex,
   Table,
   Tbody,
@@ -14,6 +19,7 @@ import {
   Thead,
   Tr,
   Checkbox,
+  Input,
   useColorModeValue,
 } from "@chakra-ui/react";
 
@@ -34,8 +40,6 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
     columns.map((column) => column.accessor)
   );
 
-  console.log("visibleColumns", visibleColumns);
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -45,6 +49,11 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
     setFilter,
     allColumns,
     getToggleHideAllColumnsProps,
+    page,
+    nextPage,
+    previousPage,
+    canNextPage,
+    canPreviousPage,
   } = useTable(
     {
       columns,
@@ -56,6 +65,28 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
   );
 
   const handleFilterChange = (columnId: string, value: string) => {
+    setFilter(columnId, value);
+    const filters = allColumns.map((column) => ({
+      id: column.id,
+      value: column.filterValue,
+    }));
+    let filteredData = data;
+    filters.forEach((filter) => {
+      if (filter.value) {
+        filteredData = filteredData.filter((row) => {
+          const cellValue = row[filter.id];
+          return cellValue !== undefined
+            ? String(cellValue)
+                .toLowerCase()
+                .includes(filter.value.toLowerCase())
+            : true;
+        });
+      }
+    });
+    setFilteredData(filteredData);
+  };
+
+  const handleFilterRangeChange = (columnId: string, value: number) => {
     setFilter(columnId, value);
     const filters = allColumns.map((column) => ({
       id: column.id,
@@ -104,6 +135,8 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
+  const [range, setRange] = useState<any[]>([]);
+
   return (
     <Card
       flexDirection="column"
@@ -121,16 +154,11 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
           Query Data Table
         </Text>
       </Flex>
-      <div>
+      <Box mx={6} marginBottom={4}>
         <div>
-          <label>Toggle Columns: </label>
+          <label>Selected Columns: </label>
           {columns.map((column) => (
             <label key={column.accessor}>
-              {/* <input
-                type="checkbox"
-                checked={visibleColumns.includes(column.accessor)}
-                onChange={() => toggleColumnVisibility(column.accessor)}
-              />{" "} */}
               <Flex align="center">
                 <Checkbox
                   defaultChecked={true}
@@ -142,30 +170,41 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
                 <Text color={textColor} fontSize="sm" fontWeight="700">
                   {column.Header}
                 </Text>
-                <input
+                <Input
                   type="text"
                   onChange={(e) =>
                     handleFilterChange(column.accessor, e.target.value)
                   }
+                  // size="xs"
+                  htmlSize={4}
+                  width="70%"
+                  fontSize="sm"
+                  variant="auth"
+                  placeholder="Search ... "
                 />
               </Flex>
             </label>
           ))}
         </div>
-        {/* <div>
-          {columns.map((column) => (
-            <div key={column.accessor}>
-              <label>{column.Header}: </label>
-              <input
-                type="text"
-                onChange={(e) =>
-                  handleFilterChange(column.accessor, e.target.value)
-                }
-              />
-            </div>
-          ))}
-        </div> */}
-      </div>
+      </Box>
+
+      <Box my={4} mx={6}>
+        <Stack direction="row" spacing={4}>
+          <CSVLink
+            data={csvData}
+            headers={csvHeaders}
+            filename="EconoSense-data-table.csv"
+          >
+            <Button
+              leftIcon={<FcDownload />}
+              colorScheme="teal"
+              variant="solid"
+            >
+              Export to CSV
+            </Button>
+          </CSVLink>
+        </Stack>
+      </Box>
 
       <Table {...getTableProps()} variant="simple" color="gray.500" mb="24px">
         <Thead>
@@ -219,6 +258,7 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
         <Tbody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
+            console.log("row:", row);
             return (
               <Tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
@@ -227,6 +267,11 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
                     fontSize={{ sm: "14px" }}
                     minW={{ sm: "150px", md: "200px", lg: "auto" }}
                     borderColor="transparent"
+                    display={
+                      visibleColumns.includes(cell.column.id)
+                        ? "table-cell"
+                        : "none"
+                    }
                   >
                     <Text color={textColor} fontSize="sm" fontWeight="700">
                       {cell.render("Cell")}
@@ -238,9 +283,6 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
           })}
         </Tbody>
       </Table>
-      <CSVLink data={csvData} headers={csvHeaders}>
-        Export to CSV
-      </CSVLink>
     </Card>
   );
 };

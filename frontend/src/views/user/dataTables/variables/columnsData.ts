@@ -51,6 +51,7 @@ export const columnsDataColumns: Columns = [
   {
     Header: "PERIOD",
     accessor: "period",
+    
   },
   {
     Header: "BCI",
