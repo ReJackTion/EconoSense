@@ -39,6 +39,7 @@ export default function UserReports() {
           <SelectPeriod
             period={period}
             onChange={(event) => periodOnChangeHandler(event)}
+            title="Date"
           />
 
           <Indicators selected_country={country} selected_period={period} />

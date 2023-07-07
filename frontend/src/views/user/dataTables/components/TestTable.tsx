@@ -11,6 +11,9 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import NumberRangeGlobalFilter from "components/input/globalRange";
 import NumberRangeColumnFilter from "components/input/numberRange";
 
+import useSWR from "swr";
+import Indicator_API from "services/indicator.service";
+
 import {
   Box,
   Stack,
@@ -44,7 +47,6 @@ interface TableProps {
 }
 
 const TestTable: React.FC<TableProps> = ({ data, columns }) => {
-  const [filteredData, setFilteredData] = useState<any[]>([]);
   const [visibleColumns, setVisibleColumns] = useState<string[]>(
     columns.map((column) => column.accessor)
   );
@@ -91,8 +93,7 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
   } = useTable(
     {
       columns,
-      data: filteredData.length ? filteredData : data,
-      // defaultColumn: { sortType: "basic" },
+      data: data.length ? data : null,
       initialState: { pageIndex: 0 },
       defaultColumn,
     },
@@ -100,50 +101,6 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
     useSortBy,
     usePagination
   );
-
-  const handleFilterChange = (columnId: string, value: string) => {
-    setFilter(columnId, value);
-    const filters = allColumns.map((column) => ({
-      id: column.id,
-      value: column.filterValue,
-    }));
-    let filteredData = data;
-    filters.forEach((filter) => {
-      if (filter.value) {
-        filteredData = filteredData.filter((row) => {
-          const cellValue = row[filter.id];
-          return cellValue !== undefined
-            ? String(cellValue)
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            : true;
-        });
-      }
-    });
-    setFilteredData(filteredData);
-  };
-
-  const handleFilterRangeChange = (columnId: string, value: number) => {
-    setFilter(columnId, value);
-    const filters = allColumns.map((column) => ({
-      id: column.id,
-      value: column.filterValue,
-    }));
-    let filteredData = data;
-    filters.forEach((filter) => {
-      if (filter.value) {
-        filteredData = filteredData.filter((row) => {
-          const cellValue = row[filter.id];
-          return cellValue !== undefined
-            ? String(cellValue)
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            : true;
-        });
-      }
-    });
-    setFilteredData(filteredData);
-  };
 
   const toggleColumnVisibility = (columnId: string) => {
     if (visibleColumns.includes(columnId)) {
@@ -156,14 +113,6 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
   const getVisibleColumns = () =>
     columns.filter((column) => visibleColumns.includes(column.accessor));
 
-  const sortTypes = {
-    date: (rowA: any, rowB: any, columnId: string) => {
-      const valueA = new Date(rowA.values[columnId]);
-      const valueB = new Date(rowB.values[columnId]);
-      return valueA.getTime() - valueB.getTime();
-    },
-  };
-
   const csvHeaders = getVisibleColumns().map((column) => column.Header);
   const csvData = rows.map((row) =>
     getVisibleColumns().map((column) => row.values[column.accessor])
@@ -171,8 +120,6 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
-
-  const [range, setRange] = useState<any[]>([]);
 
   return (
     <Card

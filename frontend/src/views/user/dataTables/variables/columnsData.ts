@@ -51,24 +51,24 @@ export const columnsDataCheck: Columns = [
 
 export const columnsDataColumns: Columns = [
   {
-    Header: "COUNTRY",
+    Header: "Country",
     accessor: "country",
   },
   {
-    Header: "PERIOD",
+    Header: "Period",
     accessor: "period",
     
   },
   {
-    Header: "BCI",
+    Header: "Business confidence index",
     accessor: "bci",
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
-    Header: "CCI",
+    Header: "Consumer confidence index",
     accessor: "cci",
     Filter: NumberRangeColumnFilter,
     filter: 'between',
@@ -108,7 +108,7 @@ export const columnsDataColumns: Columns = [
     Cell: ({ value }) => (value === 0 ? null : value),
   },
   {
-    Header: "ppi Growth Rate",
+    Header: "Producer price indices",
     accessor: "ppi_growth_rate",
     Filter: NumberRangeColumnFilter,
     filter: 'between',

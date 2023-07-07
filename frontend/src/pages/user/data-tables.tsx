@@ -21,22 +21,38 @@ import SelectCountry from "components/dropdown/SelectCountry";
 import SelectPeriod from "components/dropdown/SelectPeriod";
 import { fakeData } from "utils/fakeData";
 
+import useSWR from "swr";
+import Indicator_API from "services/indicator.service";
+
 export default function DataTables() {
   const [country, setCountry] = useState("United States");
   const monthIndex = String(new Date().getMonth() - 1).padStart(2, "0");
   const yearIndex = new Date().getFullYear();
   const latestPeriod = `${yearIndex}-${monthIndex}-01`;
-  const [period, setPeriod] = useState(latestPeriod);
+  const [endPeriod, setEndPeriod] = useState(latestPeriod);
+  const [startPeriod, setStartPeriod] = useState("1941-01-01");
 
   const countryOnChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
     const { value, name } = event.target;
     setCountry(value);
   };
 
-  const periodOnChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+  const startPeriodOnChangeHandler = (
+    event: ChangeEvent<HTMLSelectElement>
+  ) => {
     const { value, name } = event.target;
-    setPeriod(value);
+    setStartPeriod(value);
   };
+
+  const endPeriodOnChangeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = event.target;
+    setEndPeriod(value);
+  };
+
+  const { data, error, isLoading } = useSWR(
+    `${country}?start_date=${startPeriod}&end_date=${endPeriod}`,
+    Indicator_API.getMonthIndicators
+  );
 
   return (
     <UserLayout>
@@ -64,10 +80,21 @@ export default function DataTables() {
           onChange={(event) => countryOnChangeHandler(event)}
         />
         <SelectPeriod
-          period={period}
-          onChange={(event) => periodOnChangeHandler(event)}
+          period={startPeriod}
+          onChange={(event) => startPeriodOnChangeHandler(event)}
+          title="Start Date"
         />
-        <TestTable data={fakeData} columns={columnsDataColumns} />
+        <SelectPeriod
+          period={endPeriod}
+          onChange={(event) => endPeriodOnChangeHandler(event)}
+          title="End Date"
+        />
+        {error ? <div>Failed to load, data is not available yet.</div> : <></>}
+        {isLoading ? (
+          <div>loading...</div>
+        ) : (
+          <TestTable data={data} columns={columnsDataColumns} />
+        )}
         {/* <ComplexTable
           columnsData={columnsDataComplex}
           tableData={tableDataComplex as unknown as TableData[]}
