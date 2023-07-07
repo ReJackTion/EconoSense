@@ -1,10 +1,15 @@
-import React, { useState } from "react";
-import { useTable, useFilters, useSortBy } from "react-table";
+/* eslint-disable react/jsx-key */
+import React, { useState, useMemo } from "react";
+import { useTable, useFilters, useSortBy, usePagination } from "react-table";
 import { CSVLink } from "react-csv";
 import Card from "components/card/Card";
 import { FaSortDown, FaSortUp } from "react-icons/fa";
 import { FcDownload } from "react-icons/fc";
 import ValueRangeColumnFilter from "components/input/slider";
+import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+
+import NumberRangeGlobalFilter from "components/input/globalRange";
+import NumberRangeColumnFilter from "components/input/numberRange";
 
 import {
   Box,
@@ -18,9 +23,13 @@ import {
   Th,
   Thead,
   Tr,
+  Tfoot,
   Checkbox,
   Input,
   useColorModeValue,
+  Center,
+  Select,
+  HStack,
 } from "@chakra-ui/react";
 
 interface Column {
@@ -40,6 +49,25 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
     columns.map((column) => column.accessor)
   );
 
+  const DefaultColumnFilter: React.FC<{ column: any }> = ({ column }) => {
+    const { filterValue, setFilter } = column;
+    return (
+      <Input
+        size="sm"
+        value={filterValue || ""}
+        onChange={(e) => setFilter(e.target.value)}
+        placeholder="Filter..."
+      />
+    );
+  };
+
+  const defaultColumn = useMemo(
+    () => ({
+      Filter: DefaultColumnFilter,
+    }),
+    []
+  );
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -50,18 +78,27 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
     allColumns,
     getToggleHideAllColumnsProps,
     page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
     nextPage,
     previousPage,
-    canNextPage,
-    canPreviousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+    setGlobalFilter,
   } = useTable(
     {
       columns,
       data: filteredData.length ? filteredData : data,
-      defaultColumn: { sortType: "basic" },
+      // defaultColumn: { sortType: "basic" },
+      initialState: { pageIndex: 0 },
+      defaultColumn,
     },
     useFilters,
-    useSortBy
+    useSortBy,
+    usePagination
   );
 
   const handleFilterChange = (columnId: string, value: string) => {
@@ -144,6 +181,13 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
       px="0px"
       overflowX={{ sm: "scroll", lg: "scroll" }}
     >
+      {/* <HStack mb={4}>
+        <Text>Filter by Range:</Text>
+        <NumberRangeGlobalFilter
+          filterValue={state.globalFilter}
+          setFilter={setGlobalFilter}
+        />
+      </HStack> */}
       <Flex px="25px" justify="space-between" mb="20px" align="center">
         <Text
           color={textColor}
@@ -170,7 +214,7 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
                 <Text color={textColor} fontSize="sm" fontWeight="700">
                   {column.Header}
                 </Text>
-                <Input
+                {/* <Input
                   type="text"
                   onChange={(e) =>
                     handleFilterChange(column.accessor, e.target.value)
@@ -181,7 +225,8 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
                   fontSize="sm"
                   variant="auth"
                   placeholder="Search ... "
-                />
+                  id={column.accessor}
+                /> */}
               </Flex>
             </label>
           ))}
@@ -235,6 +280,9 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
                       color="gray.400"
                     >
                       {column.render("Header")}
+                      <div />
+                      {/* {column.canFilter ? column.render("Filter") : null} */}
+                      {column.Filter && <div>{column.render("Filter")}</div>}
                       <span>
                         {column.isSorted ? (
                           column.isSortedDesc ? (
@@ -256,9 +304,8 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
           ))}
         </Thead>
         <Tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+          {page.map((row) => {
             prepareRow(row);
-            console.log("row:", row);
             return (
               <Tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
@@ -283,6 +330,54 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
           })}
         </Tbody>
       </Table>
+      <Center>
+        <Box mt={4} display="flex" justifyContent="flex-end">
+          <Button
+            mx={1}
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
+          >
+            {"<<"}
+          </Button>
+          <Button
+            mx={1}
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          >
+            {"<"}
+          </Button>
+          <Button mx={1} onClick={() => nextPage()} disabled={!canNextPage}>
+            {">"}
+          </Button>
+          <Button
+            mx={1}
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            {">>"}
+          </Button>
+          <span>
+            Page{" "}
+            <strong>
+              {pageIndex + 1} of {pageOptions.length}
+            </strong>{" "}
+          </span>
+          <Select
+            value={pageSize}
+            onChange={(e) => {
+              setPageSize(Number(e.target.value));
+            }}
+            size="lg"
+            width={150}
+          >
+            {[10, 20, 50].map((size) => (
+              <option key={size} value={size}>
+                Show {size}
+              </option>
+            ))}
+          </Select>
+        </Box>
+      </Center>
     </Card>
   );
 };

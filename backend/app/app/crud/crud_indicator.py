@@ -72,10 +72,18 @@ class CRUDIndicator(CRUDBase[Indicator, IndicatorCreate, IndicatorUpdate]):
         db: Session,
         *,
         skip: int = 0,
-        limit: int = 5000,
+        limit: int = 10,
     ):
 
-        return db.query(self.model).order_by(self.model.country).all()
+        # return (
+        #     db.query(self.model)
+        #     .order_by(self.model.country)
+        #     .offset(skip)
+        #     .limit(limit)
+        #     .all()
+        # )
+
+        return db.query(self.model).limit(limit).all()
 
 
 indicator = CRUDIndicator(Indicator)

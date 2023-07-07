@@ -5,7 +5,7 @@ import Indicators from "../../components/indicators/Indicators";
 import SelectCountry from "components/dropdown/SelectCountry";
 import SelectPeriod from "components/dropdown/SelectPeriod";
 import UserLayout from "layouts/user";
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, ChangeEvent } from "react";
 
 export default function UserReports() {
   // Chakra Color Mode
