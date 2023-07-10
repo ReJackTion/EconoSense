@@ -29,6 +29,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import auth from "services/auth.service";
 
 export default function SignIn() {
   // Chakra color mode
@@ -53,8 +54,7 @@ export default function SignIn() {
   const { data: session } = useSession();
 
   const router = useRouter();
-  const callbackUrl =
-    (router.query?.callbackUrl as string) ?? "/user/data-tables";
+  const callbackUrl = (router.query?.callbackUrl as string) ?? "/auth/sign-in";
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
@@ -62,15 +62,19 @@ export default function SignIn() {
     const _target = e.target as any;
     const email = _target.email.value;
     const password = _target.password.value;
-    const result = await signIn("credentials", {
+    const firstName = _target.firstName.value;
+    const surname = _target.surname.value;
+    const result = await auth.register(
       email,
       password,
-      redirect: false,
-    });
+      firstName,
+      surname,
+      true
+    );
     if (result?.error) {
-      toast.error("Wrong email or password!!");
+      toast.error("Invalid email or password!!");
     } else {
-      toast("Logged in sucessfully!!", { autoClose: 500 });
+      toast("Signed in sucessfully!!", { autoClose: 500 });
       router.push(callbackUrl);
     }
   };
@@ -94,7 +98,7 @@ export default function SignIn() {
         >
           <Box me="auto">
             <Heading color={textColor} fontSize="36px" mb="10px">
-              Sign In
+              Sign Up
             </Heading>
             <Text
               mb="36px"
@@ -103,7 +107,7 @@ export default function SignIn() {
               fontWeight="400"
               fontSize="md"
             >
-              Enter your email and password to sign in!
+              Enter your information to sign up!
             </Text>
           </Box>
           <Flex
@@ -119,6 +123,50 @@ export default function SignIn() {
           >
             <form onSubmit={handleSubmit}>
               <FormControl>
+                <FormLabel
+                  display="flex"
+                  ms="4px"
+                  fontSize="sm"
+                  fontWeight="500"
+                  color={textColor}
+                  mb="8px"
+                >
+                  First Name<Text color={brandStars}>*</Text>
+                </FormLabel>
+                <Input
+                  isRequired={false}
+                  variant="auth"
+                  fontSize="sm"
+                  ms={{ base: "0px", md: "0px" }}
+                  type="text"
+                  placeholder="John"
+                  mb="24px"
+                  fontWeight="500"
+                  size="lg"
+                  name="firstName"
+                />
+                <FormLabel
+                  display="flex"
+                  ms="4px"
+                  fontSize="sm"
+                  fontWeight="500"
+                  color={textColor}
+                  mb="8px"
+                >
+                  Surname<Text color={brandStars}>*</Text>
+                </FormLabel>
+                <Input
+                  isRequired={false}
+                  variant="auth"
+                  fontSize="sm"
+                  ms={{ base: "0px", md: "0px" }}
+                  type="text"
+                  placeholder="Smith"
+                  mb="24px"
+                  fontWeight="500"
+                  size="lg"
+                  name="surname"
+                />
                 <FormLabel
                   display="flex"
                   ms="4px"
@@ -214,7 +262,7 @@ export default function SignIn() {
                   mb="24px"
                   type="submit"
                 >
-                  Sign In
+                  Sign Up
                 </Button>
                 {/* </Link> */}
               </FormControl>

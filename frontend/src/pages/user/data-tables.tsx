@@ -1,4 +1,11 @@
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import {
+  Box,
+  SimpleGrid,
+  Alert,
+  AlertIcon,
+  AlertTitle,
+  AlertDescription,
+} from "@chakra-ui/react";
 import DevelopmentTable from "views/user/dataTables/components/DevelopmentTable";
 import CheckTable from "views/user/dataTables/components/CheckTable";
 import ColumnsTable from "views/user/dataTables/components/ColumnsTable";
@@ -24,7 +31,10 @@ import { fakeData } from "utils/fakeData";
 import useSWR from "swr";
 import Indicator_API from "services/indicator.service";
 
+import { useSession } from "next-auth/react";
+
 export default function DataTables() {
+  const { data: session } = useSession();
   const [country, setCountry] = useState("United States");
   const monthIndex = String(new Date().getMonth() - 1).padStart(2, "0");
   const yearIndex = new Date().getFullYear();
@@ -57,49 +67,45 @@ export default function DataTables() {
   return (
     <UserLayout>
       <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-        {/* <SimpleGrid
-          mb="20px"
-          columns={{ sm: 1, md: 2 }}
-          spacing={{ base: "20px", xl: "20px" }}
-        > */}
-        {/* <DevelopmentTable
-          columnsData={columnsDataDevelopment}
-          tableData={tableDataDevelopment as unknown as TableData[]}
-        /> */}
-        {/* <CheckTable
-          columnsData={columnsDataCheck}
-          tableData={tableDataCheck as unknown as TableData[]}
-        /> */}
-        {/* <ColumnsTable
-          columnsData={columnsDataColumns}
-          // tableData={tableDataColumns as unknown as TableData[]}
-          tableData={fake_data as unknown as any}
-        /> */}
-        <SelectCountry
-          country={country}
-          onChange={(event) => countryOnChangeHandler(event)}
-        />
-        <SelectPeriod
-          period={startPeriod}
-          onChange={(event) => startPeriodOnChangeHandler(event)}
-          title="Start Date"
-        />
-        <SelectPeriod
-          period={endPeriod}
-          onChange={(event) => endPeriodOnChangeHandler(event)}
-          title="End Date"
-        />
-        {error ? <div>Failed to load, data is not available yet.</div> : <></>}
-        {isLoading ? (
-          <div>loading...</div>
+        {session ? (
+          <>
+            <SelectCountry
+              country={country}
+              onChange={(event) => countryOnChangeHandler(event)}
+            />
+            <SelectPeriod
+              period={startPeriod}
+              onChange={(event) => startPeriodOnChangeHandler(event)}
+              title="Start Date"
+            />
+            <SelectPeriod
+              period={endPeriod}
+              onChange={(event) => endPeriodOnChangeHandler(event)}
+              title="End Date"
+            />
+            {error ? (
+              <div>Failed to load, data is not available yet.</div>
+            ) : (
+              <></>
+            )}
+            {isLoading ? (
+              <Alert status="warning">
+                <AlertIcon />
+                Seems like data loading is slow, please wait...
+              </Alert>
+            ) : (
+              <TestTable data={data} columns={columnsDataColumns} />
+            )}
+          </>
         ) : (
-          <TestTable data={data} columns={columnsDataColumns} />
+          <Alert status="error">
+            <AlertIcon />
+            <AlertTitle>Your are not sign in!</AlertTitle>
+            <AlertDescription>
+              This is a protected page, please sign in to visit.
+            </AlertDescription>
+          </Alert>
         )}
-        {/* <ComplexTable
-          columnsData={columnsDataComplex}
-          tableData={tableDataComplex as unknown as TableData[]}
-        /> */}
-        {/* </SimpleGrid> */}
       </Box>
     </UserLayout>
   );

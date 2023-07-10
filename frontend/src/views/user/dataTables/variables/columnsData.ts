@@ -73,7 +73,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Government Reserves",
@@ -81,7 +81,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Industrial Production",
@@ -89,7 +89,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Inflation Growth Rate",
@@ -97,7 +97,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Long Term Interest",
@@ -105,7 +105,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Producer price indices",
@@ -113,7 +113,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Quarterly GDP",
@@ -121,7 +121,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Share Price",
@@ -129,7 +129,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Short Term Interest",
@@ -137,7 +137,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Trade In Goods",
@@ -145,7 +145,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
   {
     Header: "Unemployment Rate",
@@ -153,7 +153,7 @@ export const columnsDataColumns: Columns = [
     Filter: NumberRangeColumnFilter,
     filter: 'between',
     disableFilters: true,
-    Cell: ({ value }) => (value === 0 ? null : value),
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
 ];
 

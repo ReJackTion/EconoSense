@@ -10,7 +10,6 @@ interface Props {
 
 export default function SelectPeriod(props: Props) {
   const { period, onChange, title } = props;
-  console.log(period);
 
   return (
     <Dropdown

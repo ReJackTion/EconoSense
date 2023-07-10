@@ -7,7 +7,8 @@ class UserBase(BaseModel):
     first_name: Optional[str]
     surname: Optional[str]
     email: Optional[EmailStr] = None
-    is_superuser: bool = False
+    email_notification: bool = True
+    # is_superuser: bool = False
 
 
 # Properties to receive via API on creation

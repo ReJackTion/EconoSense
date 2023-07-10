@@ -2,7 +2,7 @@ import { Icon } from "@chakra-ui/react";
 import { MdBarChart, MdPerson, MdHome, MdLock } from "react-icons/md";
 
 // Admin Imports
-import MainDashboard from "pages/user/default";
+import MainDashboard from "pages/dashboard";
 import Profile from "pages/user/profile";
 import DataTables from "pages/user/data-tables";
 
@@ -14,12 +14,12 @@ const routes: IRoute[] = [
   {
     name: "Main Dashboard",
     layout: "/user",
-    path: "/default",
+    path: "/dashboard",
     icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
     component: MainDashboard,
   },
   {
-    name: "Responsive chart or Data Tables",
+    name: "Data Tables",
     layout: "/user",
     icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
     path: "/data-tables",

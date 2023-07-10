@@ -34,7 +34,8 @@ def login(
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
     return {
-        "access_token": create_access_token(sub=user.id),
+        "ok": True,
+        "accessToken": create_access_token(sub=user.id),
         "token_type": "bearer",
     }
 
@@ -76,3 +77,29 @@ def create_user_signup(
         )
 
     return user
+
+
+@router.put("/update", status_code=201, response_model=schemas.User)
+def update_user(
+    *,
+    user_in: schemas.user.UserUpdate,
+    db: Session = Depends(deps.get_db),
+    current_user: User = Depends(deps.get_current_user),
+) -> dict:
+    """
+    Update user in the database.
+    """
+    user = crud.user.get(db, id=current_user.id)
+    if not user:
+        raise HTTPException(
+            status_code=400, detail=f"User with ID: {user_in.id} not found."
+        )
+
+    if db.query(User).filter(User.email == user_in.email).first():
+        raise HTTPException(
+            status_code=400,
+            detail="The user with this email already exists in the system",
+        )
+
+    updated_user = crud.user.update(db=db, db_obj=user, obj_in=user_in)
+    return updated_user

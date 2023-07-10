@@ -1,7 +1,7 @@
 import { Box, SimpleGrid, useColorModeValue } from "@chakra-ui/react";
 // Assets
 // Custom components
-import Indicators from "../../components/indicators/Indicators";
+import Indicators from "components/indicators/Indicators";
 import SelectCountry from "components/dropdown/SelectCountry";
 import SelectPeriod from "components/dropdown/SelectPeriod";
 import UserLayout from "layouts/user";
