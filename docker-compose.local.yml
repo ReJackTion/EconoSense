@@ -22,7 +22,7 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=app
 
-  web:
+  backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -37,6 +37,19 @@ services:
       - DATABASE_URL=postgresql://postgres:password@db:5432/app
       - DATABASE_TEST_URL=postgresql://postgres:password@db:5432/app_test
       - BACKEND_CORS_ORIGINS=["http://localhost:3000","http://localhost:8000"]
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/src
+      - ./frontend/public:/public
+    environment:
+      - NEXT_PUBLIC_DEV_BACKEND_URL=http://localhost:8001/api/v1
+      - NEXT_PUBLIC_PROD_BACKEND_URL=http://localhost:8001/api/v1
       
 volumes:
   app-db-data:

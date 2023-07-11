@@ -26,7 +26,7 @@ import { IoMdMoon, IoMdSunny } from "react-icons/io";
 import { FaEthereum } from "react-icons/fa";
 import routes from "routes";
 import { Image } from "components/image/Image";
-import { signOut, useSession } from "next-auth/react";
+import { signOut, useSession, SignOutParams } from "next-auth/react";
 // import Link from "next/link";
 
 export default function HeaderLinks(props: { secondary: boolean }) {
@@ -47,6 +47,15 @@ export default function HeaderLinks(props: { secondary: boolean }) {
     "14px 17px 40px 4px rgba(112, 144, 176, 0.06)"
   );
   const borderButton = useColorModeValue("secondaryGray.500", "whiteAlpha.200");
+
+  const handleSignOut = () => {
+    const options: SignOutParams<true> = {
+      // Your options here
+    };
+
+    // Your sign-out logic here
+    signOut(options);
+  };
 
   return (
     <Flex
@@ -278,7 +287,7 @@ export default function HeaderLinks(props: { secondary: boolean }) {
                 color="red.400"
                 borderRadius="8px"
                 px="14px"
-                onClick={signOut}
+                onClick={handleSignOut}
               >
                 <Text fontSize="sm">Log out</Text>
               </MenuItem>
