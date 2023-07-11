@@ -84,7 +84,13 @@ export default function DataTables() {
               title="End Date"
             />
             {error ? (
-              <div>Failed to load, data is not available yet.</div>
+              <Alert status="error">
+                <AlertIcon />
+                <AlertTitle>Data not yet available!</AlertTitle>
+                <AlertDescription>
+                  The data is not available for the moment.
+                </AlertDescription>
+              </Alert>
             ) : (
               <></>
             )}

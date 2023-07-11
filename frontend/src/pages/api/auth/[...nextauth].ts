@@ -46,7 +46,7 @@ export default NextAuth({
           // which means logged in failure.
           return null
         } catch (err) {
-          console.error(err)
+        //   console.error(err)
 
           // Return null if user data could not be retrieved
           return null

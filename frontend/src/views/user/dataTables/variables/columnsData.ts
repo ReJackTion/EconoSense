@@ -155,6 +155,46 @@ export const columnsDataColumns: Columns = [
     disableFilters: true,
     Cell: ({ value }) => (value === 0 ? "Null" : value),
   },
+  {
+    Header: "Contraction Probability",
+    accessor: "contraction_prob",
+    Filter: NumberRangeColumnFilter,
+    filter: 'between',
+    disableFilters: true,
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
+  },
+  {
+    Header: "Expansion Probability",
+    accessor: "expension_prob",
+    Filter: NumberRangeColumnFilter,
+    filter: 'between',
+    disableFilters: true,
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
+  },
+  {
+    Header: "Peak Probability",
+    accessor: "peak_prob",
+    Filter: NumberRangeColumnFilter,
+    filter: 'between',
+    disableFilters: true,
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
+  },
+  {
+    Header: "Trough Probability",
+    accessor: "trough_prob",
+    Filter: NumberRangeColumnFilter,
+    filter: 'between',
+    disableFilters: true,
+    Cell: ({ value }) => (value === 0 ? "Null" : value),
+  },
+  {
+    Header: "Prediction",
+    accessor: "prediction",
+    // Filter: NumberRangeColumnFilter,
+    // filter: 'between',
+    // disableFilters: true,
+    // Cell: ({ value }) => (value === 0 ? "Null" : value),
+  },
 ];
 
 export const columnsDataComplex: Columns = [

@@ -33,8 +33,42 @@ const register = async (
   } as RegisterBody
 
   const response = await axios.post(`${API_URL}/auth/signup`, post_body)
-  return response?.data?.ok && response?.data
+  return response?.data
 }
+
+const update = async (
+    email: string,
+    password: string,
+    jwt: string,
+    first_name?: string,
+    surname?: string,
+    email_notification: boolean = true,
+  ): Promise<any> => {
+    interface RegisterBody {
+      first_name?: string
+      surname?: string
+      email: string
+      email_notification?: boolean
+      password: string
+    }
+  
+    const post_body = {
+      first_name: first_name ?? "",
+      surname: surname ?? "",
+      email: email,
+      email_notification: email_notification ?? true,
+      password: password,
+    } as RegisterBody
+
+    const config_jwt = {
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+      }
+  
+    const response = await axios.put(`${API_URL}/auth/update`, post_body, config_jwt)
+    return response?.data
+  }
 
 const login = async (
   email: string,
@@ -194,6 +228,7 @@ const auth = {
   verifyJWT,
   changePassword,
   getProfile,
+  update,
 }
 
 export default auth

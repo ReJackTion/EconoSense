@@ -71,6 +71,7 @@ export default function SignIn() {
       surname,
       true
     );
+    console.log("result:", result);
     if (result?.error) {
       toast.error("Invalid email or password!!");
     } else {
@@ -82,148 +83,147 @@ export default function SignIn() {
   return (
     // <DefaultAuthLayout illustrationBackground={'/img/auth/auth.png'}>
     <DefaultAuthLayout illustrationBackground={"/img/nfts/Nft3.png"}>
-      {!session ? (
-        <Flex
-          maxW={{ base: "100%", md: "max-content" }}
-          w="100%"
-          mx={{ base: "auto", lg: "0px" }}
-          me="auto"
-          h="100%"
-          alignItems="start"
-          justifyContent="center"
-          mb={{ base: "30px", md: "60px" }}
-          px={{ base: "25px", md: "0px" }}
-          mt={{ base: "40px", md: "14vh" }}
-          flexDirection="column"
-        >
-          <Box me="auto">
-            <Heading color={textColor} fontSize="36px" mb="10px">
-              Sign Up
-            </Heading>
-            <Text
-              mb="36px"
-              ms="4px"
-              color={textColorSecondary}
-              fontWeight="400"
-              fontSize="md"
-            >
-              Enter your information to sign up!
-            </Text>
-          </Box>
-          <Flex
-            zIndex="2"
-            direction="column"
-            w={{ base: "100%", md: "420px" }}
-            maxW="100%"
-            background="transparent"
-            borderRadius="15px"
-            mx={{ base: "auto", lg: "unset" }}
-            me="auto"
-            mb={{ base: "20px", md: "auto" }}
+      <Flex
+        maxW={{ base: "100%", md: "max-content" }}
+        w="100%"
+        mx={{ base: "auto", lg: "0px" }}
+        me="auto"
+        h="100%"
+        alignItems="start"
+        justifyContent="center"
+        mb={{ base: "30px", md: "60px" }}
+        px={{ base: "25px", md: "0px" }}
+        mt={{ base: "40px", md: "14vh" }}
+        flexDirection="column"
+      >
+        <Box me="auto">
+          <Heading color={textColor} fontSize="36px" mb="10px">
+            Sign Up
+          </Heading>
+          <Text
+            mb="36px"
+            ms="4px"
+            color={textColorSecondary}
+            fontWeight="400"
+            fontSize="md"
           >
-            <form onSubmit={handleSubmit}>
-              <FormControl>
-                <FormLabel
-                  display="flex"
-                  ms="4px"
-                  fontSize="sm"
-                  fontWeight="500"
-                  color={textColor}
-                  mb="8px"
-                >
-                  First Name<Text color={brandStars}>*</Text>
-                </FormLabel>
-                <Input
-                  isRequired={false}
-                  variant="auth"
-                  fontSize="sm"
-                  ms={{ base: "0px", md: "0px" }}
-                  type="text"
-                  placeholder="John"
-                  mb="24px"
-                  fontWeight="500"
-                  size="lg"
-                  name="firstName"
-                />
-                <FormLabel
-                  display="flex"
-                  ms="4px"
-                  fontSize="sm"
-                  fontWeight="500"
-                  color={textColor}
-                  mb="8px"
-                >
-                  Surname<Text color={brandStars}>*</Text>
-                </FormLabel>
-                <Input
-                  isRequired={false}
-                  variant="auth"
-                  fontSize="sm"
-                  ms={{ base: "0px", md: "0px" }}
-                  type="text"
-                  placeholder="Smith"
-                  mb="24px"
-                  fontWeight="500"
-                  size="lg"
-                  name="surname"
-                />
-                <FormLabel
-                  display="flex"
-                  ms="4px"
-                  fontSize="sm"
-                  fontWeight="500"
-                  color={textColor}
-                  mb="8px"
-                >
-                  Email<Text color={brandStars}>*</Text>
-                </FormLabel>
+            Enter your information to sign up!
+          </Text>
+        </Box>
+        <Flex
+          zIndex="2"
+          direction="column"
+          w={{ base: "100%", md: "420px" }}
+          maxW="100%"
+          background="transparent"
+          borderRadius="15px"
+          mx={{ base: "auto", lg: "unset" }}
+          me="auto"
+          mb={{ base: "20px", md: "auto" }}
+        >
+          <form onSubmit={handleSubmit}>
+            <FormControl>
+              <FormLabel
+                display="flex"
+                ms="4px"
+                fontSize="sm"
+                fontWeight="500"
+                color={textColor}
+                mb="8px"
+              >
+                First Name<Text color={brandStars}>*</Text>
+              </FormLabel>
+              <Input
+                isRequired={false}
+                variant="auth"
+                fontSize="sm"
+                ms={{ base: "0px", md: "0px" }}
+                type="text"
+                placeholder="John"
+                mb="24px"
+                fontWeight="500"
+                size="lg"
+                name="firstName"
+                id="firstName"
+              />
+              <FormLabel
+                display="flex"
+                ms="4px"
+                fontSize="sm"
+                fontWeight="500"
+                color={textColor}
+                mb="8px"
+              >
+                Surname<Text color={brandStars}>*</Text>
+              </FormLabel>
+              <Input
+                isRequired={false}
+                variant="auth"
+                fontSize="sm"
+                ms={{ base: "0px", md: "0px" }}
+                type="text"
+                placeholder="Smith"
+                mb="24px"
+                fontWeight="500"
+                size="lg"
+                name="surname"
+                id="surname"
+              />
+              <FormLabel
+                display="flex"
+                ms="4px"
+                fontSize="sm"
+                fontWeight="500"
+                color={textColor}
+                mb="8px"
+              >
+                Email<Text color={brandStars}>*</Text>
+              </FormLabel>
+              <Input
+                isRequired={true}
+                variant="auth"
+                fontSize="sm"
+                ms={{ base: "0px", md: "0px" }}
+                type="email"
+                placeholder="mail@EconoSense.com"
+                mb="24px"
+                fontWeight="500"
+                size="lg"
+                name="email"
+                id="email"
+              />
+              <FormLabel
+                ms="4px"
+                fontSize="sm"
+                fontWeight="500"
+                color={textColor}
+                display="flex"
+              >
+                Password<Text color={brandStars}>*</Text>
+              </FormLabel>
+              <InputGroup size="md">
                 <Input
                   isRequired={true}
-                  variant="auth"
                   fontSize="sm"
-                  ms={{ base: "0px", md: "0px" }}
-                  type="email"
-                  placeholder="mail@EconoSense.com"
+                  placeholder="Min. 8 characters"
                   mb="24px"
-                  fontWeight="500"
                   size="lg"
-                  name="email"
+                  type={show ? "text" : "password"}
+                  variant="auth"
+                  name="password"
+                  id="password"
                 />
-                <FormLabel
-                  ms="4px"
-                  fontSize="sm"
-                  fontWeight="500"
-                  color={textColor}
-                  display="flex"
-                >
-                  Password<Text color={brandStars}>*</Text>
-                </FormLabel>
-                <InputGroup size="md">
-                  <Input
-                    isRequired={true}
-                    fontSize="sm"
-                    placeholder="Min. 8 characters"
-                    mb="24px"
-                    size="lg"
-                    type={show ? "text" : "password"}
-                    variant="auth"
-                    name="password"
+                <InputRightElement display="flex" alignItems="center" mt="4px">
+                  <Icon
+                    color={textColorSecondary}
+                    _hover={{ cursor: "pointer" }}
+                    as={show ? RiEyeCloseLine : MdOutlineRemoveRedEye}
+                    onClick={handleClick}
                   />
-                  <InputRightElement
-                    display="flex"
-                    alignItems="center"
-                    mt="4px"
-                  >
-                    <Icon
-                      color={textColorSecondary}
-                      _hover={{ cursor: "pointer" }}
-                      as={show ? RiEyeCloseLine : MdOutlineRemoveRedEye}
-                      onClick={handleClick}
-                    />
-                  </InputRightElement>
-                </InputGroup>
-                <Flex justifyContent="space-between" align="center" mb="24px">
-                  {/* <FormControl display="flex" alignItems="center">
+                </InputRightElement>
+              </InputGroup>
+              <Flex justifyContent="space-between" align="center" mb="24px">
+                {/* <FormControl display="flex" alignItems="center">
                     <Checkbox
                       id="remember-login"
                       colorScheme="brandScheme"
@@ -239,7 +239,7 @@ export default function SignIn() {
                       Keep me logged in
                     </FormLabel>
                   </FormControl> */}
-                  {/* <Link href="/auth/forgot-password">
+                {/* <Link href="/auth/forgot-password">
                     <a>
                       <Text
                         color={textColorBrand}
@@ -251,105 +251,25 @@ export default function SignIn() {
                       </Text>
                     </a>
                   </Link> */}
-                </Flex>
-                {/* <Link href="/user/data-tables"> */}
-                <Button
-                  fontSize="sm"
-                  variant="brand"
-                  fontWeight="500"
-                  w="100%"
-                  h="50"
-                  mb="24px"
-                  type="submit"
-                >
-                  Sign Up
-                </Button>
-                {/* </Link> */}
-              </FormControl>
-            </form>
-            <Flex
-              flexDirection="column"
-              justifyContent="center"
-              alignItems="start"
-              maxW="100%"
-              mt="0px"
-            >
-              <Text color={textColorDetails} fontWeight="400" fontSize="14px">
-                Not registered yet?
-                <Link href="/auth/sign-up">
-                  <a>
-                    <Text
-                      color={textColorBrand}
-                      as="span"
-                      ms="5px"
-                      fontWeight="500"
-                    >
-                      Create an Account
-                    </Text>
-                  </a>
-                </Link>
-              </Text>
-            </Flex>
-          </Flex>
+              </Flex>
+              {/* <Link href="/user/data-tables"> */}
+              <Button
+                fontSize="sm"
+                variant="brand"
+                fontWeight="500"
+                w="100%"
+                h="50"
+                mb="24px"
+                type="submit"
+              >
+                Sign Up
+              </Button>
+              {/* </Link> */}
+            </FormControl>
+          </form>
         </Flex>
-      ) : (
-        <Flex
-          maxW={{ base: "100%", md: "max-content" }}
-          w="100%"
-          mx={{ base: "auto", lg: "0px" }}
-          me="auto"
-          h="100%"
-          alignItems="start"
-          justifyContent="center"
-          mb={{ base: "30px", md: "60px" }}
-          px={{ base: "25px", md: "0px" }}
-          mt={{ base: "40px", md: "14vh" }}
-          flexDirection="column"
-        >
-          <Box me="auto">
-            <Heading color={textColor} fontSize="36px" mb="10px">
-              Sign Out
-            </Heading>
-            <Text
-              mb="36px"
-              ms="4px"
-              color={textColorSecondary}
-              fontWeight="400"
-              fontSize="md"
-            >
-              Click the button below to sign out!
-            </Text>
-          </Box>
-          <Flex
-            zIndex="2"
-            direction="column"
-            w={{ base: "100%", md: "420px" }}
-            maxW="100%"
-            background="transparent"
-            borderRadius="15px"
-            mx={{ base: "auto", lg: "unset" }}
-            me="auto"
-            mb={{ base: "20px", md: "auto" }}
-          >
-            <form onSubmit={signOut}>
-              <FormControl>
-                <Button
-                  fontSize="sm"
-                  variant="brand"
-                  colorScheme="red"
-                  fontWeight="500"
-                  w="100%"
-                  h="50"
-                  mb="24px"
-                  type="submit"
-                >
-                  Sign Out
-                </Button>
-              </FormControl>
-            </form>
-          </Flex>
-        </Flex>
-      )}
+      </Flex>
+
       <ToastContainer />
     </DefaultAuthLayout>
   );

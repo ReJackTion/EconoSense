@@ -95,11 +95,11 @@ def update_user(
             status_code=400, detail=f"User with ID: {user_in.id} not found."
         )
 
-    if db.query(User).filter(User.email == user_in.email).first():
-        raise HTTPException(
-            status_code=400,
-            detail="The user with this email already exists in the system",
-        )
+    # if db.query(User).filter(User.email == user_in.email).first():
+    #     raise HTTPException(
+    #         status_code=400,
+    #         detail="The user with this email already exists in the system",
+    #     )
 
     updated_user = crud.user.update(db=db, db_obj=user, obj_in=user_in)
     return updated_user
