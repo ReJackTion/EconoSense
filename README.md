@@ -26,8 +26,9 @@ Make sure you have Docker and [Docker Compose](https://docs.docker.com/compose/i
 1. Run `docker-compose -f docker-compose.local.yml up -d` (this will download the postgres
    image and build the image for the recipe app - takes about 5 mins)
 2. Run `docker ps`to run the container
-3. Visit `http://localhost:8001/docs`
-4. Run `docker-compose -f docker-compose.local.yml down` to shut down the container
+3. Visit `http://localhost:1000` for frontend
+4. Visit `http://localhost:8001/docs` for backend
+5. Run `docker-compose -f docker-compose.local.yml down` to shut down the container
 
 Windows Users: Having problems getting the volume to work properly? Review the following resources:
 

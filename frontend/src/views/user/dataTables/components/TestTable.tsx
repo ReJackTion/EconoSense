@@ -128,8 +128,10 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
     prediction,
   }));
 
-  const dates = extractedData.map(({ period }) => period);
-  const stages = extractedData.map(({ prediction }) => prediction);
+  const dates = extractedData.map(({ period }: { period: string }) => period);
+  const stages = extractedData.map(
+    ({ prediction }: { prediction: string }) => prediction
+  );
 
   return (
     <>

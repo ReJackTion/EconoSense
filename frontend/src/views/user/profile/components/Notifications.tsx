@@ -27,6 +27,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import auth from "services/auth.service";
 import { useRouter } from "next/router";
+import { Session } from "next-auth";
 
 export default function Notifications(props: { [x: string]: any }) {
   const { ...rest } = props;
@@ -34,6 +35,13 @@ export default function Notifications(props: { [x: string]: any }) {
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
 
   const { data: session } = useSession();
+
+  interface Session_New extends Session {
+    token: any;
+    user: any;
+  }
+
+  let session_new = session as Session_New;
 
   const textColor = useColorModeValue("navy.700", "white");
   const textColorSecondary = "gray.400";
@@ -58,10 +66,11 @@ export default function Notifications(props: { [x: string]: any }) {
     const firstName = _target.firstName.value;
     const surname = _target.surname.value;
     const emailAlerts = isAlert;
+
     const result = await auth.update(
       email,
       password,
-      session.token,
+      session_new.token,
       firstName,
       surname,
       emailAlerts
@@ -210,7 +219,7 @@ export default function Notifications(props: { [x: string]: any }) {
                 variant="auth"
                 name="password"
                 id="password"
-                defaultValue={session.user.password}
+                defaultValue={session_new.user.password}
               />
               <InputRightElement display="flex" alignItems="center" mt="4px">
                 <Icon

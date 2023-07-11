@@ -1,11 +1,13 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import { ChartOptions } from "apexcharts";
+import { ApexOptions } from "apexcharts";
 import { Center } from "@chakra-ui/react";
 import { lineChartOptionsTotalSpent } from "variables/charts";
 
 // Load ApexCharts dynamically (to prevent server-side rendering issues)
-const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+const ReactApexCharts = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 
 interface EconomicCycleGraphProps {
   currentStage: string;
@@ -16,7 +18,7 @@ const EconomicCycleGraph: React.FC<EconomicCycleGraphProps> = ({
   currentStage,
   stage_prob,
 }) => {
-  const options: ChartOptions = {
+  const options: ApexOptions = {
     chart: {
       type: "bar",
     },
@@ -45,7 +47,7 @@ const EconomicCycleGraph: React.FC<EconomicCycleGraphProps> = ({
       <Center marginBottom={50} fontSize={20} fontWeight={"bold"}>
         Economic cycle stage probability:
       </Center>
-      <ApexCharts
+      <ReactApexCharts
         options={options}
         series={options.series}
         type="bar"
