@@ -1,11 +1,11 @@
 import { Box, SimpleGrid, useColorModeValue } from "@chakra-ui/react";
 // Assets
 // Custom components
-import Indicators from "../../components/indicators/Indicators";
+import Indicators from "components/indicators/Indicators";
 import SelectCountry from "components/dropdown/SelectCountry";
 import SelectPeriod from "components/dropdown/SelectPeriod";
 import UserLayout from "layouts/user";
-import React, { useState, useEffect, ChangeEvent } from "react";
+import React, { useState, ChangeEvent } from "react";
 
 export default function UserReports() {
   // Chakra Color Mode
@@ -39,6 +39,7 @@ export default function UserReports() {
           <SelectPeriod
             period={period}
             onChange={(event) => periodOnChangeHandler(event)}
+            title="Date"
           />
 
           <Indicators selected_country={country} selected_period={period} />

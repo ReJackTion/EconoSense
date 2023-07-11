@@ -16,7 +16,7 @@ class CRUDIndicator(CRUDBase[Indicator, IndicatorCreate, IndicatorUpdate]):
         skip: int = 0,
         limit: int = 5000,
         start_date: str = None,
-        end_date: str = None
+        end_date: str = None,
     ):
         result = None
 
@@ -66,6 +66,24 @@ class CRUDIndicator(CRUDBase[Indicator, IndicatorCreate, IndicatorUpdate]):
     def get_all_country_list(self, db: Session, *, skip: int = 0, limit: int = 5000):
         result = db.query(self.model.country).distinct().offset(skip).limit(limit).all()
         return result
+
+    def get_all_data(
+        self,
+        db: Session,
+        *,
+        skip: int = 0,
+        limit: int = 10,
+    ):
+
+        # return (
+        #     db.query(self.model)
+        #     .order_by(self.model.country)
+        #     .offset(skip)
+        #     .limit(limit)
+        #     .all()
+        # )
+
+        return db.query(self.model).limit(limit).all()
 
 
 indicator = CRUDIndicator(Indicator)

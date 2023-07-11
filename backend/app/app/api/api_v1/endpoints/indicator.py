@@ -9,6 +9,10 @@ from app import crud
 from app.api import deps
 from app.schemas.indicator import Indicator
 
+from fastapi import Response
+import csv
+import io
+
 router = APIRouter()
 
 
@@ -61,3 +65,53 @@ def fetch_indicators(
     res = {"country_list": sorted(country_list)}
 
     return res
+
+
+@router.get("/all_data", status_code=200)
+def fetch_all_data(
+    *,
+    db: Session = Depends(deps.get_db),
+) -> Any:
+    """
+    Fetch list of all data in DB
+    """
+    result = crud.indicator.get_all_data(db=db)
+    if not result:
+        # the exception is raised, not returned - you will get a validation
+        # error otherwise.
+        raise HTTPException(
+            status_code=404, detail=f"There is no country in the database"
+        )
+
+    return result
+
+
+@router.get("/download_csv", status_code=200)
+def download_all_data(*, db: Session = Depends(deps.get_db), response: Response) -> Any:
+    """
+    Download csv of all data in DB
+    """
+
+    # Prepare the CSV response
+    csv_filename = "data.csv"
+    response.headers["Content-Disposition"] = f"attachment; filename={csv_filename}"
+    response.headers["Content-Type"] = "text/csv"
+
+    result = crud.indicator.get_all_data(db=db)
+    if not result:
+        # the exception is raised, not returned - you will get a validation
+        # error otherwise.
+        raise HTTPException(
+            status_code=404, detail=f"There is no country in the database"
+        )
+
+    # Write data to CSV and return the response
+    csv_data = io.StringIO()
+    writer = csv.writer(csv_data)
+    for row in result:
+        # answer = [row.period, row.country, row.cci, row.bci, row.government_reserves, row.industrial_production, row., row., row., row., row., row., row., row., row., row., row., row., ]
+        # print(row.bci)
+        writer.writerow([0.1, 0.2])
+
+    return Response(content=csv_data.getvalue(), media_type="text/csv")
+    # return {"ok": True}

@@ -5,8 +5,8 @@ from app.db.base_class import Base
 
 class Indicator(Base):
     id = Column(Integer, primary_key=True, index=True)
-    period = Column(DateTime, nullable=False)
-    country = Column(String(256), nullable=False)
+    period = Column(DateTime, nullable=False, index=True)
+    country = Column(String(256), nullable=False, index=True)
     bci = Column(FLOAT(precision=32), nullable=True)
     bci_nor = Column(FLOAT(precision=32), nullable=True)
     bci_pc = Column(FLOAT(precision=32), nullable=True)
