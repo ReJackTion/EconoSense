@@ -1,9 +1,11 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import { ChartOptions } from "apexcharts";
+import { ApexOptions } from "apexcharts";
 
 // Load ApexCharts dynamically (to prevent server-side rendering issues)
-const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
+const ReactApexCharts = dynamic(() => import("react-apexcharts"), {
+  ssr: false,
+});
 
 interface EconomicCycleGraphProps {
   dates: string[];
@@ -34,7 +36,7 @@ const CycleHistoryChart: React.FC<EconomicCycleGraphProps> = ({
     };
   });
 
-  const options: ChartOptions = {
+  const options: ApexOptions = {
     chart: {
       type: "line",
     },
@@ -59,7 +61,7 @@ const CycleHistoryChart: React.FC<EconomicCycleGraphProps> = ({
     <div
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
-      <ApexCharts
+      <ReactApexCharts
         options={options}
         series={options.series}
         type="line"

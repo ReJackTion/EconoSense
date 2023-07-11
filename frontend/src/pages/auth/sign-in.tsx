@@ -25,7 +25,7 @@ import Link from "next/link";
 import { FcGoogle } from "react-icons/fc";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn, signOut, SignOutParams } from "next-auth/react";
 import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -73,6 +73,15 @@ export default function SignIn() {
       toast("Logged in sucessfully!!", { autoClose: 500 });
       router.push(callbackUrl);
     }
+  };
+
+  const handleSignOut = () => {
+    const options: SignOutParams<true> = {
+      // Your options here
+    };
+
+    // Your sign-out logic here
+    signOut(options);
   };
 
   return (
@@ -283,7 +292,7 @@ export default function SignIn() {
             me="auto"
             mb={{ base: "20px", md: "auto" }}
           >
-            <form onSubmit={signOut}>
+            <form onSubmit={handleSignOut}>
               <FormControl>
                 <Button
                   fontSize="sm"
