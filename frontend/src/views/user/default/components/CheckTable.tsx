@@ -118,6 +118,7 @@ export default function CheckTable(props: TableProps) {
                           defaultChecked={cell.value[1]}
                           colorScheme="brandScheme"
                           me="10px"
+                          
                         />
                         <Text color={textColor} fontSize="sm" fontWeight="700">
                           {cell.value[0]}

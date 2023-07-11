@@ -1,10 +1,10 @@
-import Router from 'next/router'
-import React, { useEffect } from 'react'
+import Router from "next/router";
+import React, { useEffect } from "react";
 
-export default function Home () {
+export default function Home() {
   useEffect(() => {
-    Router.push('/user/default')
-  })
+    Router.push("/dashboard");
+  });
 
-  return <></>
+  return <></>;
 }

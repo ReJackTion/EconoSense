@@ -18,7 +18,7 @@ const EconomicCycleGraph: React.FC<EconomicCycleGraphProps> = ({
 }) => {
   const options: ChartOptions = {
     chart: {
-      type: "line",
+      type: "bar",
     },
     series: [
       {
@@ -35,9 +35,9 @@ const EconomicCycleGraph: React.FC<EconomicCycleGraphProps> = ({
         formatter: (value: number) => `${value}%`,
       },
     },
-    stroke: {
-      curve: "smooth",
-    },
+    // stroke: {
+    //   curve: "smooth",
+    // },
   };
 
   return (
@@ -48,7 +48,7 @@ const EconomicCycleGraph: React.FC<EconomicCycleGraphProps> = ({
       <ApexCharts
         options={options}
         series={options.series}
-        type="line"
+        type="bar"
         width="100%"
         height="150%"
       />

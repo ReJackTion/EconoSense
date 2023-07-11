@@ -5,10 +5,11 @@ import { getDateRange } from "utils/getDateRange";
 interface Props {
   period: string;
   onChange(event: ChangeEvent<HTMLSelectElement>): void;
+  title: string;
 }
 
 export default function SelectPeriod(props: Props) {
-  const { period, onChange } = props;
+  const { period, onChange, title } = props;
 
   return (
     <Dropdown
@@ -18,7 +19,7 @@ export default function SelectPeriod(props: Props) {
       value={period}
       onChange={onChange}
       required
-      title="Date"
+      title={title}
     />
   );
 }
