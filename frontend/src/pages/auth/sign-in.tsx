@@ -269,7 +269,7 @@ export default function SignIn() {
               fontWeight="400"
               fontSize="md"
             >
-              Click the button below to sign out!
+              Your are already logged in, click the button below to sign out!
             </Text>
           </Box>
           <Flex

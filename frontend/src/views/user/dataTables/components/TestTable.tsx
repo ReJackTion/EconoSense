@@ -146,7 +146,7 @@ const TestTable: React.FC<TableProps> = ({ data, columns }) => {
             fontWeight="700"
             lineHeight="100%"
           >
-            Economic cycle histoty chart
+            Economic cycle historical chart
           </Text>
         </Flex>
         <CycleHistoryChart dates={dates} stages={stages} />
